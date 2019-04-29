@@ -1,0 +1,61 @@
+{
+    "manifest_version": 2,
+    "name": "testdotinstall",
+    "version": "0.0.2",
+    "description": "testdotinstall",
+    "browser_action": {
+        "default_icon": "./icon/icon128.png",
+        "default_popup": "popup.html"
+    },
+    "background": {
+        "scripts": [
+            "background.js"
+        ],
+        "persistent": false
+    },
+
+    "icons": {
+        "128": "./icon/icon128.png"
+    },
+    "content_scripts": [{
+        "matches": ["http://*/*", "https://*/*"],
+        "js": [
+            "contents.js"
+        ]
+    }],
+    "permissions": ["storage"],
+    "commands": {
+        "skip-10sec": {
+            "description": "skip the video to 10sec",
+            "global": true,
+            "suggested_key": {
+                "default": "Ctrl+Shift+D",
+                "mac": "Ctrl+Shift+X"
+            }
+        },
+        "previous-10sec": {
+            "description": "skip the video to -10sec",
+            "global": true,
+            "suggested_key": {
+                "default": "Ctrl+Shift+A",
+                "mac": "Ctrl+Shift+A"
+            }
+        },
+        "play-pause": {
+            "description": "play/pause",
+            "global": true,
+            "suggested_key": {
+                "default": "Ctrl+Shift+Space",
+                "mac": "Ctrl+Shift+Space"
+            }
+        },
+        "pip-switch": {
+            "description": "pip/unpip",
+            "global": true,
+            "suggested_key": {
+                "default": "Ctrl+Shift+P",
+                "mac": "Ctrl+Shift+P"
+            }
+        }
+    }
+}
