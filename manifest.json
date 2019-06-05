@@ -23,38 +23,41 @@
             "contents.js"
         ]
     }],
-    "permissions": ["storage"],
+    "permissions": [
+        "tabs",
+        "storage"
+    ],
     "commands": {
         "skip-10sec": {
             "description": "skip the video to 10sec",
             "global": true,
             "suggested_key": {
-                "default": "Ctrl+Shift+D",
-                "mac": "Ctrl+Shift+X"
+                "default": "Ctrl+Shift+6",
+                "mac": "Ctrl+Shift+6"
             }
         },
         "previous-10sec": {
             "description": "skip the video to -10sec",
             "global": true,
             "suggested_key": {
-                "default": "Ctrl+Shift+A",
-                "mac": "Ctrl+Shift+A"
+                "default": "Ctrl+Shift+7",
+                "mac": "Ctrl+Shift+7"
             }
         },
         "play-pause": {
             "description": "play/pause",
             "global": true,
             "suggested_key": {
-                "default": "Ctrl+Shift+Space",
-                "mac": "Ctrl+Shift+Space"
+                "default": "Ctrl+Shift+8",
+                "mac": "Ctrl+Shift+8"
             }
         },
         "pip-switch": {
             "description": "pip/unpip",
             "global": true,
             "suggested_key": {
-                "default": "Ctrl+Shift+P",
-                "mac": "Ctrl+Shift+P"
+                "default": "Ctrl+Shift+9",
+                "mac": "Ctrl+Shift+9"
             }
         }
     }

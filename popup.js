@@ -1,22 +1,26 @@
+$elm = elem => document.querySelector(elem);
+
+const pipbutton = $elm('#pipButton');
+const continuosbutton = $elm('#continuosButton');
+const autoCoplibutton = $elm('#autoCopliButton');
+
 window.onload = function() {
-    const pipbutton = document.querySelector('#pipButton');
-    const continuosbutton = document.querySelector('#continuosButton');
-    const autoCoplibotton = document.querySelector('#autoCopliBotton');
     const operationBtn = (obj, boolBtn) => boolBtn ? obj.click() : obj.checked = false;
+
     pipbutton.addEventListener('click', function() {
         checkboxStatus();
     }, false);
     continuosbutton.addEventListener('click', function() {
         checkboxStatus()
     });
-    autoCoplibotton.addEventListener('click', function() {
+    autoCoplibutton.addEventListener('click', function() {
         checkboxStatus()
     });
 
-    chrome.storage.sync.get(["pipbtn", "cntbtn", "cnpbtn"], function(btnState) {
+    chrome.storage.local.get(["pipbtn", "cntbtn", "cnpbtn"], function(btnState) {
         operationBtn(pipbutton, btnState.pipbtn);
         operationBtn(continuosbutton, btnState.cntbtn);
-        operationBtn(autoCoplibotton, btnState.cnpbtn);
+        operationBtn(autoCoplibutton, btnState.cnpbtn);
 
     });
 
@@ -27,9 +31,10 @@ window.onload = function() {
 
 const checkboxStatus = () => {
 
-    let pipBtn = document.querySelector('#pipButton').checked;
-    let cntBtn = document.querySelector('#continuosButton').checked;
-    let cnpBtn = document.querySelector('#autoCopliBotton').checked;
+
+    let pipBtn = pipbutton.checked;
+    let cntBtn = continuosbutton.checked;
+    let cnpBtn = autoCoplibutton.checked;
     let sendJSON = {
         "pipbtn": pipBtn,
         "cntbtn": cntBtn,
@@ -38,27 +43,29 @@ const checkboxStatus = () => {
 
     console.log("こんにちは！");
     // Update the chrome storage
-    chrome.storage.sync.set({ pipbtn: pipBtn }, function() {});
-    chrome.storage.sync.set({ cntbtn: cntBtn }, function() {});
-    chrome.storage.sync.set({ cnpbtn: cnpBtn }, function() {});
+    chrome.storage.local.set({ pipbtn: pipBtn }, function() {});
+    chrome.storage.local.set({ cntbtn: cntBtn }, function() {});
+    chrome.storage.local.set({ cnpbtn: cnpBtn }, function() {});
 
     // if chacking the button, this send message from popup.js to contents.js
-    chrome.tabs.query({ currentWindow: true, active: true },
-        function(tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, sendJSON)
-        });
+    // chrome.tabs.query({ currentWindow: true, active: true },
+    //     function(tabs) {
+    //         chrome.tabs.sendMessage(tabs[0].id, sendJSON)
+    //     });
 
     console.log(sendJSON);
     //  background.jsにメッセージを送信
     // const sendJson = { "firstName": "Peter", "lastName": "Jones" }
-    chrome.runtime.sendMessage(sendJSON,
-        function(response) {
-            console.log(response);
-        }
+    // chrome.runtime.sendMessage(sendJSON,
+    //     function(response) {
+    //         console.log(response);
+    //     }
 
-    );
+    // );
 
 }
+
+
 
 
 // // backgroundで受け取った値をコンソールに表示
