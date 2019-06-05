@@ -2,16 +2,22 @@ var pipconfig
 var cntconfig
 var cnpconfig
 chrome.commands.onCommand.addListener(function(command) {
-    console.log('Command:', command);
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+        // アクティブなタブ tabs[0] のcontent scriptsにメッセージを送信
+        chrome.tabs.sendMessage(tabs[0].id, { greeting: command }, function(response) {
+            console.log(response.farewell);
+        });
+    });
 });
+
 
 window.addEventListener('keydown', function(e) {
     console.log('keydown');
 });
 //  init set data
-chrome.storage.sync.set({ pipbtn: false }, function() {});
-chrome.storage.sync.set({ cntbtn: false }, function() {});
-chrome.storage.sync.set({ cnpbtn: false }, function() {});
+// chrome.storage.local.set({ pipbtn: false }, function() {});
+// chrome.storage.local.set({ cntbtn: false }, function() {});
+// chrome.storage.local.set({ cnpbtn: false }, function() {});
 
 chrome.runtime.onMessage.addListener(
     function(message, sender, respons) {

@@ -6,6 +6,12 @@
 
 <body>
     <button id="contents_button">Test</button>
+    <script>
+        var treetagger = require('treetagger');
+        treetagger.tag("This is a test!", function(err, results) {
+            console.log(results);
+        });
+    </script>
 </body>
 
 </html>
