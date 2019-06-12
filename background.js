@@ -4,7 +4,7 @@ var cnpconfig
 chrome.commands.onCommand.addListener(function(command) {
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
         // アクティブなタブ tabs[0] のcontent scriptsにメッセージを送信
-        chrome.tabs.sendMessage(tabs[0].id, { greeting: command }, function(response) {
+        chrome.tabs.sendMessage(tabs[0].id, { sendCommand: command }, function(response) {
             console.log(response.farewell);
         });
     });

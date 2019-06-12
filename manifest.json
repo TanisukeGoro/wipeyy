@@ -1,10 +1,10 @@
 {
     "manifest_version": 2,
-    "name": "testdotinstall",
+    "name": "wipeyy - ",
     "version": "0.0.2",
-    "description": "testdotinstall",
+    "description": "wipeyはショートカットで動画をワイプで呼び出せます。ワイプ動画は常に最前列に配置され、【再生・停止・10スキップ】も可能です。",
     "browser_action": {
-        "default_icon": "./icon/icon128.png",
+        "default_icon": "./icon/icon_eye.png",
         "default_popup": "popup.html"
     },
     "background": {
@@ -15,7 +15,7 @@
     },
 
     "icons": {
-        "128": "./icon/icon128.png"
+        "128": "./icon/icon_eye.png"
     },
     "content_scripts": [{
         "matches": ["http://*/*", "https://*/*"],

@@ -4,11 +4,18 @@ const pipbutton = $elm('#pipButton');
 const continuosbutton = $elm('#continuosButton');
 const autoCoplibutton = $elm('#autoCopliButton');
 
+const operationBtn = (obj, boolBtn) => boolBtn ? obj.setAttribute('checked', "") : obj.checked = false;
+
 window.onload = function() {
-    const operationBtn = (obj, boolBtn) => boolBtn ? obj.click() : obj.checked = false;
 
     pipbutton.addEventListener('click', function() {
         checkboxStatus();
+        sendMsg = { sendCommand: 'clickPipBtn' }
+            // contents scriptにpipBtnを実行するようにメッセージを送信する
+        chrome.tabs.query({ currentWindow: true, active: true },
+            function(tabs) {
+                chrome.tabs.sendMessage(tabs[0].id, sendMsg)
+            });
     }, false);
     continuosbutton.addEventListener('click', function() {
         checkboxStatus()
@@ -21,17 +28,10 @@ window.onload = function() {
         operationBtn(pipbutton, btnState.pipbtn);
         operationBtn(continuosbutton, btnState.cntbtn);
         operationBtn(autoCoplibutton, btnState.cnpbtn);
-
     });
-
-    // document.getElementById('pipButton').addEventListener('checked', function() {
-    //     console.log('kfkfkf')
-    // })
 }
 
 const checkboxStatus = () => {
-
-
     let pipBtn = pipbutton.checked;
     let cntBtn = continuosbutton.checked;
     let cnpBtn = autoCoplibutton.checked;
@@ -48,10 +48,9 @@ const checkboxStatus = () => {
     chrome.storage.local.set({ cnpbtn: cnpBtn }, function() {});
 
     // if chacking the button, this send message from popup.js to contents.js
-    // chrome.tabs.query({ currentWindow: true, active: true },
-    //     function(tabs) {
-    //         chrome.tabs.sendMessage(tabs[0].id, sendJSON)
-    //     });
+
+
+
 
     console.log(sendJSON);
     //  background.jsにメッセージを送信

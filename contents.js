@@ -1,60 +1,72 @@
 // global argment
-let videoElem = '';
+// let videoElem = '';
+// let isVideoElem = '';
 //  get current page URL
 const currURL = window.location.toString();
 const dotInstallURL = 'https://dotinstall.com/lessons/';
 
-
 window.onload = function() {
-    const isVideoElem = document.querySelector('video');
+    isVideoElem = document.querySelector('video');
     //  if there page has video element, then create video operation class.
     if (isVideoElem !== null) videoElem = new VideoRefer(isVideoElem);
 
-    // ドットインストールを開いているか判定してページ読み込み時の動作
-    if (currURL.indexOf(dotInstallURL) === 0) {
-        // Auto play the videoReference
-        if (videoElem !== null) {
-            videoElem.unMuted();
-            chrome.storage.local.get(["pipbtn"], function(btnState) {
-                btnState.pipbtn && goPicInPic();
-            });
-            videoElem.goPlay();
 
-            // chrome.runtime.onMessage.addListener(function(request) {
-            //     // run "picture In picture", when clicking the pip button.
-            //     // When pip button again, became end the "picture in picture."
-            //     console.log(request);
-            //     console.log(videoElem.pipStatus);
-            //     (videoElem.pipStatus) ? videoElem.goPicInPic(): videoElem.stopPicInPic();
-            //     return true;
-            // });
+    // Auto play the videoReference
+    if (videoElem !== null) {
+        videoElem.unMuted();
+        chrome.storage.local.get(["pipbtn"], function(btnState) {
+            btnState.pipbtn && videoElem.goPicInPic();
+        });
+        videoElem.goPlay();
+        chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+            // run "picture In picture", when clicking the pip button.
+            // When pip button again, became end the "picture in picture."
+            if (request.sendCommand === 'clickPipBtn') {
+                if (!videoElem.pipStatus) {
+                    videoElem.goPicInPic();
+                } else {
+                    videoElem.stopPicInPic()
+                };
+                sendResponse({ farewell: `pip status : ${videoElem.pipStatus}` });
+            }
+
+            return true;
+        });
 
 
-        };
     };
 
-    chrome.storage.onChanged.addListener(function(changes, namespace) {
-        for (var key in changes) {
-            var storageChange = changes[key];
-            console.log('Storage key "%s" in namespace "%s" changed. ' +
-                'Old value was "%s", new value is "%s".',
-                key,
-                namespace,
-                storageChange.oldValue,
-                storageChange.newValue);
-        }
-    });
+
+
+    // chrome.storage.onChanged.addListener(function(changes, namespace) {
+    //     for (var key in changes) {
+    //         var storageChange = changes[key];
+    //         console.log('test');
+    //         if (key == 'pipbtn' && isVideoElem !== null) {
+    //             (videoElem.pipStatus) ? videoElem.stopPicInPic(): videoElem.goPicInPic();
+    //         };
+
+    //         // videoElem.stopPicInPic(): videoElem.goPicInPic();
+    //         // console.log('Storage key "%s" in namespace "%s" changed. ' +
+    //         //     'Old value was "%s", new value is "%s".',
+    //         //     key,
+    //         //     namespace,
+    //         //     storageChange.oldValue)
+    //     }
+    // });
 
     chrome.runtime.onMessage.addListener(
         function(request, sender, sendResponse) {
-            console.log('get message');
-            switch (request.greeting) {
+            // console.log('get message');
+            // console.log(window.videoElem);
+            switch (request.sendCommand) {
                 case 'pip-switch':
                     (videoElem.pipStatus) ? videoElem.stopPicInPic(): videoElem.goPicInPic();
                     sendResponse({ farewell: `pip status : ${videoElem.pipStatus}` });
                     break;
                 case 'play-pause':
-                    (videoElem.playStatus) ? videoElem.stopPlay(): videoElem.goPlay();
+                    console.log(videoElem);
+                    (!isVideoElem.paused) ? videoElem.stopPlay(): videoElem.goPlay();
                     sendResponse({ farewell: `play status : ${videoElem.playStatus}` });
                     break;
                 case 'previous-10sec':
@@ -113,25 +125,33 @@ class VideoRefer {
      * Pause the active video
      * @function stopPlay
      */
-    stopPlay = () => this.videoReference.pause()
-        .then(() => this.playStatus = false)
-        .catch(() => console.error(' 停止されませんでした '));
+    stopPlay = () => this.videoReference.pause();
+    // .then(() => this.playStatus = false)
+    // .catch(() => console.error(' 停止されませんでした '));
 
     /**
      * activate picture in picture
      * @function goPicInPic
      */
-    goPicInPic = () => this.videoReference.requestPictureInPicture()
-        .then(() => this.pipStatus = true)
-        .catch(() => console.error(' Go PIP が実行されませんでした。'));
+    goPicInPic = () => {
+        // document.querySelector('video').requestPictureInPicture();
+        console.log('goPiP');
+        this.videoReference.requestPictureInPicture()
+            .then(() => this.pipStatus = true)
+            .catch((e) => console.error(' Go PIP が実行されませんでした。', e));
+    }
 
     /**
      * unactivate picture in picture
      * @function stopPicInPic
      */
-    stopPicInPic = () => document.exitPictureInPicture()
-        .then(() => this.pipStatus = false)
-        .catch(() => console.error(' Stop PIP が実行されませんでした。'));
+    stopPicInPic = () => {
+        // document.exitPictureInPicture();
+        console.log('stopPip');
+        document.exitPictureInPicture()
+            .then(() => this.pipStatus = false)
+            .catch((e) => console.error(' Stop PIP が実行されませんでした。', e));
+    }
 
     /**
      * 
@@ -150,12 +170,16 @@ class VideoRefer {
         let listener = this.videoReference;
         // 動画が終了した時に実行されるイベント
         listener.addEventListener('ended', function() {
-            // chrome.strageの状態を取得
-            chrome.storage.local.get(["cntbtn", "cnpbtn"], function(btnState) {
-                // もし、連続再生がTrueなら次のページをクリック
-                btnState.cnpbtn && document.querySelector('#lesson-complete-button').click();
-                btnState.cntbtn && document.querySelector('#go_to_next_video').click();
-            });
+            // ドットインストールを開いているか判定してページ読み込み時の動作
+            if (currURL.indexOf(dotInstallURL) === 0) {
+                // chrome.strageの状態を取得
+                chrome.storage.local.get(["cntbtn", "cnpbtn"], function(btnState) {
+                    // もし、連続再生がTrueなら次のページをクリック
+                    let cnpbtnTxt = document.querySelector('#completeButtonLabel').textContent;
+                    (btnState.cnpbtn && cnpbtnTxt.trim() == "完了") && document.querySelector('#lesson-complete-button').click()
+                    btnState.cntbtn && document.querySelector('#go_to_next_video').click();
+                });
+            }
         });
 
         listener.addEventListener('play', function() {
