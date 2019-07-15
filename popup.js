@@ -40,8 +40,6 @@ const checkboxStatus = () => {
         "cntbtn": cntBtn,
         "cnpbtn": cnpBtn
     };
-
-    console.log("こんにちは！");
     // Update the chrome storage
     chrome.storage.local.set({ pipbtn: pipBtn }, function() {});
     chrome.storage.local.set({ cntbtn: cntBtn }, function() {});

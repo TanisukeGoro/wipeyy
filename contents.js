@@ -1,7 +1,3 @@
-// global argment
-// let videoElem = '';
-// let isVideoElem = '';
-//  get current page URL
 const currURL = window.location.toString();
 const dotInstallURL = 'https://dotinstall.com/lessons/';
 
@@ -9,10 +5,8 @@ window.onload = function() {
     isVideoElem = document.querySelector('video');
     //  if there page has video element, then create video operation class.
     if (isVideoElem !== null) videoElem = new VideoRefer(isVideoElem);
-
-
     // Auto play the videoReference
-    if (videoElem !== null) {
+    if (isVideoElem !== null) {
         videoElem.unMuted();
         chrome.storage.local.get(["pipbtn"], function(btnState) {
             btnState.pipbtn && videoElem.goPicInPic();
@@ -54,7 +48,6 @@ window.onload = function() {
     //         //     storageChange.oldValue)
     //     }
     // });
-
     chrome.runtime.onMessage.addListener(
         function(request, sender, sendResponse) {
             // console.log('get message');
@@ -101,7 +94,7 @@ class VideoRefer {
         this.VideoBind();
         this.VideoAttached();
     };
-    /**
+    /**
      * Unmuted the active video
      * @function unMuted 
      */
@@ -117,7 +110,8 @@ class VideoRefer {
      * Pley the active video
      * @function goPlay 
      */
-    goPlay = () => this.videoReference.play()
+    goPlay = () =>
+        this.videoReference.play()
         .then(() => this.playStatus = true)
         .catch(() => console.error(' 再生されませんでした '));
 
@@ -133,25 +127,24 @@ class VideoRefer {
      * activate picture in picture
      * @function goPicInPic
      */
-    goPicInPic = () => {
+    goPicInPic = () =>
         // document.querySelector('video').requestPictureInPicture();
-        console.log('goPiP');
         this.videoReference.requestPictureInPicture()
-            .then(() => this.pipStatus = true)
-            .catch((e) => console.error(' Go PIP が実行されませんでした。', e));
-    }
+        .then(() => this.pipStatus = true)
+        .catch((e) => console.error(' Go PIP が実行されませんでした。', e));
+
+
 
     /**
      * unactivate picture in picture
      * @function stopPicInPic
      */
-    stopPicInPic = () => {
+    stopPicInPic = () =>
         // document.exitPictureInPicture();
-        console.log('stopPip');
         document.exitPictureInPicture()
-            .then(() => this.pipStatus = false)
-            .catch((e) => console.error(' Stop PIP が実行されませんでした。', e));
-    }
+        .then(() => this.pipStatus = false)
+        .catch((e) => console.error(' Stop PIP が実行されませんでした。', e));
+
 
     /**
      * 
