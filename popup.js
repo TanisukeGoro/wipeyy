@@ -10,8 +10,8 @@ window.onload = function() {
 
     pipbutton.addEventListener('click', function() {
         checkboxStatus();
-        sendMsg = { sendCommand: 'clickPipBtn' }
-            // contents scriptにpipBtnを実行するようにメッセージを送信する
+        sendMsg = { sendCommand: 'clickPipBtn' };
+        // contents scriptにpipBtnを実行するようにメッセージを送信する
         chrome.tabs.query({ currentWindow: true, active: true },
             function(tabs) {
                 chrome.tabs.sendMessage(tabs[0].id, sendMsg)

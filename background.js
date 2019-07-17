@@ -1,30 +1,41 @@
-var pipconfig
-var cntconfig
-var cnpconfig
+let pipconfig
+let cntconfig
+let cnpconfig
+
+// background.js -> contents.jsへ
 chrome.commands.onCommand.addListener(function(command) {
+
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
         // アクティブなタブ tabs[0] のcontent scriptsにメッセージを送信
-        chrome.tabs.sendMessage(tabs[0].id, { sendCommand: command }, function(response) {
-            console.log(response.farewell);
+        chrome.storage.local.get("latestTabId", function(tabId) {
+            // タブのチェック
+            chrome.tabs.get(tabId.latestTabId, function() {
+                if (chrome.runtime.lastError) {
+                    tabId.latestTabId = tabs[0].id
+                }
+            });
+            chrome.tabs.sendMessage(tabId.latestTabId, { sendCommand: command }, function(response) {
+                console.log(response.farewell);
+            });
+
         });
+
     });
+    return 0;
 });
-
-
-window.addEventListener('keydown', function(e) {
-    console.log('keydown');
-});
-//  init set data
-// chrome.storage.local.set({ pipbtn: false }, function() {});
-// chrome.storage.local.set({ cntbtn: false }, function() {});
-// chrome.storage.local.set({ cnpbtn: false }, function() {});
 
 chrome.runtime.onMessage.addListener(
     function(message, sender, respons) {
-        console.log(message.pipbtn, message.cntbtn, message.cnpbtn);
-        pipconfig = message.pipbtn;
-        cntconfig = message.cntBtn;
-        cnpconfig = message.cnpBtn;
+        switch (message.query) {
+            case 'getTabId':
+                chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+                    chrome.storage.local.set({ latestTabId: tabs[0].id }, function() {});
+                });
+                break;
+
+            default:
+                break;
+        }
         // 引数に値を入れて返す感じ？
         respons("こんにちは");
         return true;
