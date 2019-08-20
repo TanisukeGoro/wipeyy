@@ -10,7 +10,7 @@
 | Skip video 10 sec     | Ctrl + Shift + 7 (⌘ + shift + 7 on macOS) |
 | Video back 10 seconds | Ctrl + Shift + 6 (⌘ + shift + 6 on macOS) |
 
-If you wanna be change keyboard shortcuts, open new tab and enter address as below:
+If you wanna be change keyboard shortcuts, open new tab and enter address as below:  
 ***chrome://extensions/shortcuts***
 <!-- # wipeyy
 全てのエンジニアを駄目にする機能が2つ
