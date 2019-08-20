@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        body {
+            min-width: 250px;
+            min-height: 150px;
+            font-family: system-ui, "Hiragino Kaku Gothic ProN", sans-serif;
+        }
+
+        .labelswich {
+            width: 44px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .switch2__content {
+            display: block;
+            cursor: pointer;
+            position: relative;
+            border-radius: 30px;
+            height: 20px;
+            -webkit-transition: all .1s .4s;
+            -moz-transition: all .1s .4s;
+            -ms-transition: all .1s .4s;
+            -o-transition: all .1s .4s;
+            transition: all .1s .4s;
+            overflow: hidden;
+        }
+
+        .switch2__content:before {
+            content: "";
+            display: block;
+            position: absolute;
+            width: calc(100% - 4px);
+            height: calc(100% - 4px);
+            top: 0;
+            left: 0;
+            border: 1.5px solid #000000;
+            border-radius: 20px;
+            background-color: #fff;
+        }
+
+        .switch2__content:after {
+            content: "";
+            display: block;
+            position: absolute;
+            background-color: transparent;
+            width: 0;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border-radius: 20px;
+            -webkit-transition: all .5s;
+            -moz-transition: all .5s;
+            -ms-transition: all .5s;
+            -o-transition: all .5s;
+            transition: all .5s;
+        }
+
+        .inputSwich {
+            display: none;
+        }
+
+        .switch2__circle {
+            display: block;
+            top: 5px;
+            left: 5px;
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+            background-color: #000000;
+            -webkit-transition: all .5s;
+            -moz-transition: all .5s;
+            -ms-transition: all .5s;
+            -o-transition: all .5s;
+            transition: all .5s;
+        }
+
+        .inputSwich:checked~.switch2__circle {
+            left: 29px;
+            background-color: #fff;
+        }
+
+        .inputSwich:checked~.switch2__content {
+            border-color: transparent;
+            -webkit-transition: all 0s;
+            -moz-transition: all 0s;
+            -ms-transition: all 0s;
+            -o-transition: all 0s;
+            transition: all 0s;
+        }
+
+        .inputSwich:checked~.switch2__content:after {
+            background-color: rgb(0, 215, 97);
+            width: 100%;
+        }
+
+        .text {
+            /* display: inline-block; */
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .col2 {
+            padding-left: 35px;
+            font-weight: 100;
+        }
+
+        img {
+            float: left;
+            padding-right: 10px;
+            padding-left: 20px;
+        }
+
+        h1 {
+            font-size: 16px;
+        }
+
+        span {
+            color: #de963a;
+        }
+
+        .tg {
+            margin-left: 10px;
+        }
+    </style>
+    <!-- <input type="checkbox" onchange="aaa();" id="tete"> -->
+    <div class="title">
+        <img src="icon/icon128.png" width="20px" alt="">
+        <h1> Wipeyy <span>for Chrome</span>
+        </h1>
+    </div>
+    <hr>
+    <div class="content">
+        <table class="tg">
+            <tr>
+                <td class="col1">
+                    <p class="text">Picture in Picture</p>
+                </td>
+                <td class="col2">
+                    <div class="switch2">
+                        <label class="labelswich" for="pipButton">
+                            <input type="checkbox" class="inputSwich" id="pipButton" />
+                            <span class="switch2__content"></span>
+                            <span class="switch2__circle"></span>
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col1">
+                    <p class="text">連続再生</p>
+                </td>
+                <td class="col2">
+                    <div class="switch2">
+                        <label class="labelswich" for="continuosButton">
+                            <input type="checkbox" class="inputSwich" id="continuosButton" />
+                            <span class="switch2__content"></span>
+                            <span class="switch2__circle"></span>
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col1">
+                    <p class="text">完了ボタン自動化</p>
+                </td>
+                <td class="col2">
+                    <div class="switch2">
+                        <label class="labelswich" for="autoCopliButton">
+                            <input type="checkbox" class="inputSwich" id="autoCopliButton" />
+                            <span class="switch2__content"></span>
+                            <span class="switch2__circle"></span>
+                        </label>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script src="popup.js"></script>
+</body>
+
+</html>
