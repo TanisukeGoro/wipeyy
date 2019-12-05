@@ -155,12 +155,12 @@ class VideoRefer {
         .catch((e) => console.error(' Stop PIP が実行されませんでした。', e));
 
     /**
-     * 
+     * skip Video 10 sec.
      */
     skipTenSec = () => this.videoReference.currentTime += 10;
 
     /**
-     * 
+     * back Video 10 sec.
      */
     backTenSec = () => this.videoReference.currentTime -= 10;
 
@@ -199,147 +199,3 @@ class VideoRefer {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-// 残骸たち。
-//     // chrome.storage.onChanged.addListener(function(changes, namespace) {
-//     //     for (var key in changes) {
-//     //         var storageChange = changes[key];
-//     //         console.log('test');
-//     //         if (key == 'pipbtn' && isVideoElem !== null) {
-//     //             (videoElem.pipStatus) ? videoElem.stopPicInPic(): videoElem.goPicInPic();
-//     //         };
-
-//     //         // videoElem.stopPicInPic(): videoElem.goPicInPic();
-//     //         // console.log('Storage key "%s" in namespace "%s" changed. ' +
-//     //         //     'Old value was "%s", new value is "%s".',
-//     //         //     key,
-//     //         //     namespace,
-//     //         //     storageChange.oldValue)
-//     //     }
-//     // });
-
-
-// // https://www.winhelponline.com/blog/disable-autoplay-video-google-chrome-flags/
-// // 上記のサイトを参照すると
-// // chrome:flags/#autoplay-policy
-// // においてAutoplay policyの項目を"No user gesture is required."
-// // とすればAuto-playが実行できるようになる。
-
-
-// // window.onload = () => {
-// //     unmuted();
-// //     // Checking supported the "picture in picture"  in this browser
-// //     !document.pictureInPictureEnabled || video.disablePictureInPicture ?
-// //         (togglePipButton.hidden, alert('このブラウザではPIPがサポートされていません!')) : console.log();
-// //     // the active video is plaied, when click the play button.
-// //     togglePlaybutton.addEventListener('click', async function() {
-// //         try {
-// //             if (video.paused)
-// //                 await goPlay();
-// //             else
-// //                 await goPause();
-
-// //         } catch (error) {
-// //             console.log(`> Error! : ${error}`);
-// //         } finally {
-
-// //         }
-// //     });
-
-// //     togglePlaybutton.click();
-
-
-// // Note that this can happen if user clicked the "Toggle Picture-in-Picture"
-// // button but also if user clicked some browser context menu or if
-// // Picture-in-Picture was triggered automatically for instance.
-
-// //     // define window obj
-// //     let pipWindow;
-// //     // pipを検知してpipwindowサイズを取得する
-// //     video.addEventListener('enterpictureinpicture', (event) => {
-// //         console.log('Video entered Picture-in-Picture');
-
-// //         pipWindow = event.pictureInPictureWindow;
-// //         console.log(`Window size is ${pipWindow.width}x${pipWindow.height}`);
-// //         // pipwindowサイズの変更を検知して、サイズを出力
-// //         pipWindow.addEventListener('resize', onPipWindowResize);
-// //     });
-
-// //     video.addEventListener('leavepictureinpicture', () => {
-// //         console.log('Video left Picture-in-Picture');
-// //         pipWindow.removeEventListener('resize', onPipWindowResize);
-// //     });
-
-// //     function onPipWindowResize() {
-// //         console.log(`> Window size changed to ${pipWindow.width}x${pipWindow.height}`);
-// //     }
-// // }
-
-
-// isVideoElem = document.querySelector('video');
-// //  if there page has video element, then create video operation class.
-// if (isVideoElem !== null) {
-//     console.info('debug002');
-//     videoElem = new VideoRefer(isVideoElem);
-//     initVideo(videoElem);
-// } else {
-//     const target = document.querySelector('body');
-//     const observer = new MutationObserver(records => {
-//         records.forEach(list => {
-//             //             testobj = list.addedNodes;
-//             list.addedNodes.forEach(i => {
-//                 // 				i.forEach(j => console.log(j.localName));
-//                 // 				console.log(i);
-//                 if (i.nodeName == 'DIV' || i.nodeName == 'VIDEO') {
-//                     if (i.innerHTML.indexOf('<video') > 0) observedVideo(document.querySelector('video'))
-//                 }
-//             })
-//         })
-//     })
-//     const option = {
-//         childList: true,
-//         subtree: true,
-//         characterData: false
-//     };
-//     const observedVideo = elem => {
-//         console.info('debug002');
-//         console.log(elem.getAttribute('src'));
-//         videoElem = new VideoRefer(isVideoElem);
-//         observer.disconnect(target, option);
-//         initVideo(videoElem);
-//     }
-//     observer.observe(target, option);
-// }
-
-// const initVideo = (videoElem) => {
-//     console.log(videoElem);
-//     videoElem.unMuted();
-//     chrome.storage.local.get(["pipbtn"], function(btnState) {
-//         btnState.pipbtn && videoElem.goPicInPic();
-//     });
-//     videoElem.goPlay();
-//     chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-//         // run "picture In picture", when clicking the pip button.
-//         // When pip button again, became end the "picture in picture."
-//         if (request.sendCommand === 'clickPipBtn') {
-//             if (!videoElem.pipStatus) {
-//                 videoElem.goPicInPic();
-//             } else {
-//                 videoElem.stopPicInPic()
-//             };
-//             sendResponse({ farewell: `pip status : ${videoElem.pipStatus}` });
-//         }
-
-//         return true;
-//     });
-
-// }
