@@ -27,16 +27,20 @@ chrome.commands.onCommand.addListener(function(command) {
 chrome.runtime.onMessage.addListener(
     function(message, sender, respons) {
         switch (message.query) {
-            case 'getTabId':
+            case 'get-Tab-Id':
                 chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
                     chrome.storage.local.set({ latestTabId: tabs[0].id }, function() {});
                 });
+                respons("Hello");
+                break;
+            case 'check-pip-status':
+                
+                respons("return check-pip-status");
                 break;
 
             default:
                 break;
         }
         // 引数に値を入れて返す感じ？
-        respons("こんにちは");
         return true;
     });

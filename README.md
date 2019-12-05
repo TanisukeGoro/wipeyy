@@ -1,9 +1,15 @@
 # Wipeyy - Controllable PIP Chrome Extension - 
 
-説明はあとでかく。
+**Always on top Floating Mini Player for Youtube with controls**  
+
+Watch video using Picture-in-Picture(Always on top Floating Mini Player).  
+
+Picture-in-Picture (PiP) allows you to watch videos in a floating window (always on top of other windows) so you can keep an eye on what you’re watching while interacting with other sites, or applications.  
+It also, some shortcuts suitable for playback are provided, allowing operation even when the browser is not displayed!!  
+
 
 ## Keyboard shortcuts
-| Feature               | Command                                  |
+| Feature               | Command                                   |
 | --------------------- | ----------------------------------------- |
 | Picture in picture    | Ctrl + Shift + 9 (⌘ + shift + 9 on macOS) |
 | Pause / Start         | Ctrl + Shift + 8 (⌘ + shift + 8 on macOS) |
@@ -12,6 +18,17 @@
 
 If you wanna be change keyboard shortcuts, open new tab and enter address as below:  
 ***chrome://extensions/shortcuts***
+
+## Tested in following websites  
+
+- https://youtube.com/
+- https://www.netflix.com/
+- https://www.primevideo.com/
+- https://www.twitch.tv/
+- https://www.bilibili.com/
+
+The extension should works on other websites as well.  
+
 <!-- # wipeyy
 全てのエンジニアを駄目にする機能が2つ
 1. ピクチャーインピクチャー(フローティングビデオ)
