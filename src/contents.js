@@ -74,7 +74,8 @@ const operationVideo = (operationCommand, responseStatus = true) => {
 
   let tabs = "";
   chrome.runtime.sendMessage({ query: "get-Tab-Id" }, function(response) {
-    console.log(response);
+    // console.log(response);
+    if(responce=="goPIP") return !0
   });
 
   // console.log(tabs, tabs[0].id);

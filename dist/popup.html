@@ -9,11 +9,30 @@
 </head>
 
 <body>
+    <!-- https://sterfield.co.jp/programmer/%E3%83%87%E3%83%90%E3%82%A4%E3%82%B9%E3%81%A7%
+    E8%A6%8B%E3%81%8B%E3%81%91%E3%82%8Bonoff%E3%81%AE%E3%83%9C%E3%82%BF%E3%83%B3%E3%82%9
+    2html%E3%81%A8css%E3%81%A7%E5%AE%9F%E8%A3%85%E3%81%97%E3%81%A6/ -->
     <style>
+        * {
+            color: #333333
+        }
+
         body {
-            min-width: 250px;
-            min-height: 150px;
+            margin-bottom: 0px;
+            min-width: 340px;
+            /* min-height: 150px; */
             font-family: system-ui, "Hiragino Kaku Gothic ProN", sans-serif;
+        }
+
+        table,
+        .text__btn,
+        h2 {
+            -ms-user-select: none;
+            /* IE 10+ */
+            -moz-user-select: -moz-none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         .labelswich {
@@ -113,7 +132,9 @@
         }
 
         .col2 {
-            padding-left: 35px;
+            /* padding: 57px; */
+            right: 20px;
+            position: absolute;
             font-weight: 100;
         }
 
@@ -121,32 +142,116 @@
             float: left;
             padding-right: 10px;
             padding-left: 20px;
+            margin-top: 5px;
         }
-
+        .title{
+            display: inline-block;
+            padding-top: 5px;
+        }
         h1 {
+            display: inline;
             font-size: 16px;
+            padding-top: 5px;
         }
 
-        span {
+        h2 {
+            font-size: 14px;
+            padding-left: 10px;
+            line-height: 2px
+        }
+
+        h3 {
+            font-size: 12px;
+        }
+
+        span.head {
             color: #de963a;
         }
 
-        .tg {
+        .tg,
+        .tg-1 {
             margin-left: 10px;
+        }
+
+        .accordion {
+            background-color: #fff;
+            cursor: pointer;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            transition: 0.4s;
+        }
+
+        .active,
+        .accordion:hover {
+            background-color: #ccc;
+        }
+
+        .accordion:after {
+            color: #777;
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+        }
+
+        .panel {
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+        }
+
+        .link-video-info {
+            margin: 0 10px;
+            font-size: 10px;
+            padding: 0.25em 0.5em;
+            /*上下 左右の余白*/
+            color: #494949;
+            /*文字色*/
+            background: transparent;
+            /*背景透明に*/
+            border-left: solid 5px #7db4e6;
+            /*左線*/
+        }
+
+        .link-video-title {
+            color: #494949;
+            /*文字色*/
+            margin: 0px 10px;
+            margin-bottom: 10px;
+            padding-left: 8px;
+            font-size: 14px;
+        }
+
+        .js-link-go-to-settings {
+            display: inline-block;
+            padding: 0.3em 1em;
+            text-decoration: none;
+            color: #696f74;
+            border: solid 2px #de963a;
+            border-radius: 3px;
+            transition: .4s;
+        }
+
+        .js-link-go-to-settings:hover {
+            background: #de963a;
+            color: white;
         }
     </style>
     <!-- <input type="checkbox" onchange="aaa();" id="tete"> -->
-    <div class="title">
-        <img src="icon/icon128.png" width="20px" alt="">
-        <h1> Wipeyy <span>for Chrome</span>
-        </h1>
-    </div>
+    <img src="icon/icon128.png" width="20px" alt="">
+        <div class="title">
+            <h1> Wipeyy <span class="head">for Chrome</span></h1>
+        </div>
+        <button class="js-link-go-to-settings"><span data-translate="L000100"></span></button>
     <hr>
     <div class="content">
         <table class="tg">
             <tr>
                 <td class="col1">
-                    <p class="text">Picture in Picture</p>
+                    <p class="text"><span data-translate="L000000"></span></p>
                 </td>
                 <td class="col2">
                     <div class="switch2">
@@ -158,35 +263,43 @@
                     </div>
                 </td>
             </tr>
-            <tr>
-                <td class="col1">
-                    <p class="text">連続再生</p>
-                </td>
-                <td class="col2">
-                    <div class="switch2">
-                        <label class="labelswich" for="continuosButton">
-                            <input type="checkbox" class="inputSwich" id="continuosButton" />
-                            <span class="switch2__content"></span>
-                            <span class="switch2__circle"></span>
-                        </label>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col1">
-                    <p class="text">完了ボタン自動化</p>
-                </td>
-                <td class="col2">
-                    <div class="switch2">
-                        <label class="labelswich" for="autoCopliButton">
-                            <input type="checkbox" class="inputSwich" id="autoCopliButton" />
-                            <span class="switch2__content"></span>
-                            <span class="switch2__circle"></span>
-                        </label>
-                    </div>
-                </td>
-            </tr>
         </table>
+        <p class="link-video-info"><span data-translate="L000001"></span></p>
+        <p class="link-video-title" id="link-video-title"></p>
+        <button class="accordion"><span class="text__btn">▶︎</span><span data-translate="L000002"></span></button>
+        <hr>
+        <div class="panel">
+            <table class="tg-1">
+                <tr>
+                    <td class="col1">
+                        <p class="text"><span data-translate="L000003"></span></p>
+                    </td>
+                    <td class="col2">
+                        <div class="switch2">
+                            <label class="labelswich" for="continuosButton">
+                                <input type="checkbox" class="inputSwich" id="continuosButton" />
+                                <span class="switch2__content"></span>
+                                <span class="switch2__circle"></span>
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col1">
+                        <p class="text"><span data-translate="L000004"></span></p>
+                    </td>
+                    <td class="col2">
+                        <div class="switch2">
+                            <label class="labelswich" for="autoCopliButton">
+                                <input type="checkbox" class="inputSwich" id="autoCopliButton" />
+                                <span class="switch2__content"></span>
+                                <span class="switch2__circle"></span>
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
     <script src="popup.js"></script>
 </body>
