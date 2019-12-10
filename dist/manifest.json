@@ -1,10 +1,11 @@
 {
     "manifest_version": 2,
-    "name": "wipeyy - Controllable \"picture in picture\".",
+    "name": "__MSG_appName__",
+    "description": "__MSG_appDesc__",
     "short_name": "wipeyy",
-    "version": "0.2.2",
+    "version": "0.3.0",
     "author": "Abe Keishi",
-    "description": "ショートカットで動画をワイプにできるwipeyy。ワイプは常に最前列に配置され、【再生・停止・10スキップ】も可能です。",
+    "default_locale": "en",
     "browser_action": {
         "default_icon": "./icon/icon_eye.png",
         "default_popup": "popup.html"
