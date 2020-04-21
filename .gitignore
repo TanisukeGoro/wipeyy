@@ -1,3 +1,6 @@
 src/tes.json
 src/memo.md
 .DS_Store
+/prottype_image
+/node_modules
+/dist
