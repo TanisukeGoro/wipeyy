@@ -1,5 +1,7 @@
 # Wipeyy - Controllable PIP Chrome Extension - 
 
+[日本語版](https://github.com/TanisukeGoro/Wipeyy)
+
 **Always on top Floating Mini Player for Youtube with controls**  
 
 Watch video using Picture-in-Picture(Always on top Floating Mini Player).  
@@ -49,6 +51,7 @@ The extension should works on other websites as well.
 - v0.0.2
   - Prototype creation
 
+**このプロジェクトはZenhubを用いて管理しています。**
 <!-- # wipeyy
 全てのエンジニアを駄目にする機能が2つ
 1. ピクチャーインピクチャー(フローティングビデオ)
