@@ -4,3 +4,4 @@ src/memo.md
 /prottype_image
 /node_modules
 /dist
+*.zip

@@ -33,6 +33,10 @@ The extension should works on other websites as well.
 
 ## Release Note
 
+- v0.3.2
+  - Add build system(webpack)
+  - fix and optimize
+
 - v0.3.0
   - Supports multiple languages (ja, en)
   - Fixed bug that button is flipped
