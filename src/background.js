@@ -45,16 +45,6 @@ chrome.runtime.onMessage.addListener(function(message, sender, respons) {
           for (let i in tabs) {
             ids.push(tabs[i].id);
           }
-
-          // IDが指定されているか
-
-          // 指定されていたら存在をチェック(タブの存在をチェックする関数)
-
-          // 存在していたらPIPの状態をチェックする (PIPチェック関数)
-
-          // PIPがTrueならtabIdはそのまま
-
-          // IDを取得して全てのPIPステータスをテストする
         });
       });
       respons("return check-pip-status");
