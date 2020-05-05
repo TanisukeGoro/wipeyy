@@ -1,6 +1,8 @@
 # Wipeyy - Controllable PIP Chrome Extension - 
 
-[日本語版](https://github.com/TanisukeGoro/Wipeyy)
+<!-- [日本語版](https://github.com/TanisukeGoro/Wipeyy) -->
+
+CAUTION: This `develop` branch has major change in contrast with `master` branch. If you need latest version, you can clone master branch.
 
 **Always on top Floating Mini Player for Youtube with controls**  
 
