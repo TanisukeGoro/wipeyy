@@ -5,12 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <!-- <script src="vue.js"></script> -->
-  <script src="./plugins/vuedev.js"></script>
-  <script src="./plugins/Vibrant.min.js"></script>
-  <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
 </head>
-
 <body>
   <style>
     body {
@@ -61,12 +56,6 @@
 
   </style>
   <div id="app">
-    <!-- <ul style="background-color:#fff;" >
-      <li v-for="(item, index) in items" :key="index">
-        <p>{{item.id}}</p>
-        <p>{{item.title}}</p>
-      </li>
-    </ul> -->
     <div class="d-flex" v-for="(item, index) in items" :key="index">
       <div class="img-cover" :style="{ 
         backgroundImage: `linear-gradient(${item.backgroundColor}, ${item.backgroundColor}), url('${item.img}')`,
@@ -79,6 +68,7 @@
       </div>
     </div>
   </div>
+
   <script src="popup.js"></script>
 </body>
 
