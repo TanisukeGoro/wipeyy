@@ -43,6 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
        
     },
     methods: {
+      openTabById(){
+        // TODO: null check
+        chrome.tabs.update(item.tabId, {active:true})
+      },
       allTabsQuery(callback) {
         return chrome.tabs.query({}, callback);
       },
