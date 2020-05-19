@@ -1,9 +1,8 @@
-/*global chrome */
+/*eslint no-unused-vars:*/
 /**
  * Browser specific functions
  */
 const ExtensionService = {
-
   /**
    * Send message to Extension background page
    * @param message
@@ -11,18 +10,20 @@ const ExtensionService = {
    * @returns {*}
    */
   sendMessage: function(message, callback) {
-      //console.log("sendMessage", message);
-      return chrome.runtime.sendMessage.apply(chrome, arguments);
+    //console.log("sendMessage", message);
+    return chrome.runtime.sendMessage.apply(chrome, arguments)
   },
-
+  tabsSendMessage: function(id, message, callback) {
+    return chrome.tabs.sendMessage.apply(chrome, arguments)
+  },
   getResourceUrl: function(resourceName) {
-      //console.log("getResourceUrl", resourceName);
-      return chrome.extension.getURL.apply(chrome, arguments);
+    //console.log("getResourceUrl", resourceName);
+    return chrome.extension.getURL.apply(chrome, arguments)
   },
 
   getLocalizedMessage: function(messageName) {
-      //console.log("getLocalizedMessage", messageName);
-      return chrome.i18n.getMessage.apply(chrome, arguments);
+    //console.log("getLocalizedMessage", messageName);
+    return chrome.i18n.getMessage.apply(chrome, arguments)
   },
 
   log: function(message) {
@@ -35,12 +36,10 @@ const ExtensionService = {
    * Incoming message from Extension background page
    */
   onMessage: {
-
-      addListener: function(func) {
-          chrome.runtime.onMessage.addListener.apply(chrome.runtime.onMessage, arguments);
-      }
-
+    addListener: function(func) {
+      chrome.runtime.onMessage.addListener.apply(chrome.runtime.onMessage, arguments)
+    }
   }
-};
+}
 
-export default ExtensionService;
+export default ExtensionService

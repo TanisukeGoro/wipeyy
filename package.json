@@ -6,7 +6,9 @@
   "author": "Okita <keisi1100525@outlook.jp>",
   "license": "MIT",
   "scripts": {
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "start": "webpack-dev-server",
+    "watch": "webpack --watch"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -14,13 +16,21 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.9.5",
     "@babel/polyfill": "^7.8.7",
     "@babel/preset-env": "^7.9.5",
+    "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "copy-webpack-plugin": "^5.1.1",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "vue-loader": "^15.9.2",
+    "vue-template-compiler": "^2.6.11",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
     "write-file-webpack-plugin": "^4.5.1"
   },
   "dependencies": {
-    "vue": "^2.6.11"
+    "eslint": "^6.8.0",
+    "vue": "^2.6.11",
+    "webpack-dev-server": "^3.11.0"
   }
 }
