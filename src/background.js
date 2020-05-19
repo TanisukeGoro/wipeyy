@@ -75,6 +75,7 @@ const queryThumbnailUrl = function(url) {
 const bindVideoInfo = function (tabId, changeInfo, tab) { 
   return { 
     tabId,
+    windowId: tab.windowId,
     title: tab.title,
     siteName: querySiteDomain(tab.url),
     url: tab.url,
