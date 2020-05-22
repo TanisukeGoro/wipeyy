@@ -38,6 +38,10 @@
       white-space: nowrap;
       margin-bottom: 5px;
     }
+    .pointer {
+      cursor: pointer;
+    }
+
     p.siteest3:before{
       content:"";
       display:inline-block;
@@ -56,16 +60,17 @@
     svg{
       height: 1rem;
       width: 1rem;
+      vertical-align: text-bottom;
     }
 
   </style>
   <div id="app">
-    <div class="d-flex" v-for="(item, index) in items" :key="index">
+    <div class="d-flex " v-for="(item, index) in items" :key="index">
       <div class="img-cover" :style="{ 
         backgroundImage: `linear-gradient(${item.backgroundColor}, ${item.backgroundColor}), url('${item.img}')`,
         color: item.color }">
-        <div class="title">
-          <h3 @click="openTab(item)"><svg-base :icon-color="openTabColor"><open-tab /></svg-base>{{ item.title }}</h3>
+        <div class="title pointer" @click="openTab(item)">
+          <h3><svg-base :icon-color="item.color"><open-tab /></svg-base>{{ item.title }}</h3>
           <img class="icon" :src="item.favicon">
           <div class="site">{{ item.siteName }}</div>
         </div>
