@@ -53,8 +53,9 @@
       vertical-align:middle;
       height: 16px;
     }
-    .open-tab{
-      height: 1.17em;
+    svg{
+      height: 1rem;
+      width: 1rem;
     }
 
   </style>
@@ -64,8 +65,7 @@
         backgroundImage: `linear-gradient(${item.backgroundColor}, ${item.backgroundColor}), url('${item.img}')`,
         color: item.color }">
         <div class="title">
-          <h3 @click="openTab(item)"><open-tab :icon-color="openTabColor"></open-tab>{{ item.title }}</h3>
-          <h3 @click="openTabById(item)"> {{ item.title }}</h3>
+          <h3 @click="openTab(item)"><svg-base :icon-color="openTabColor"><open-tab /></svg-base>{{ item.title }}</h3>
           <img class="icon" :src="item.favicon">
           <div class="site">{{ item.siteName }}</div>
         </div>

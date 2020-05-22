@@ -4,12 +4,14 @@ import Vue from 'vue'
 import * as imgClient from './utils/imgRenderClient'
 import ExtensionService from './utils/ExtensionService'
 import openTab from './icon/openTab.vue'
+import SvgBase from './icon/SvgBase.vue'
 
 const newVue = option => new Vue(option)
 document.addEventListener('DOMContentLoaded', () => {
   newVue({
     el: '#app',
     components: {
+      SvgBase,
       openTab
     },
     data() {
