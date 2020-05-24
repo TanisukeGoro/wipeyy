@@ -1,15 +1,4 @@
-import ExtensionService from './utils/ExtensionService'
-
 let GLOBAL_VIDEO_REFERER = []
-
-const bindVideoReferrer = function() {
-  let videoReferrer = {}
-  chrome.storage.local.get(['bindVideoReferrer'], function(obj) {
-    videoReferrer = obj
-  })
-  ExtensionService.log(videoReferrer)
-  return videoReferrer
-}
 
 // 重複したJsonのindexが前の方を排除する
 const removeDuplicates = function(jsonObject, searchKey) {
@@ -26,17 +15,59 @@ const tabIdindexOf = function(jsonObject, value) {
   return jsonObject.map(json => json.tabId).indexOf(value)
 }
 
+const updatVideoRefer = function(tabId, key, value) {
+  chrome.storage.local.get(['bindVideoReferrer'], function(result) {
+    let videos = result.bindVideoReferrer
+    if (videos !== undefined || videos.length !== 0) {
+      let tabIdIndex = tabIdindexOf(videos, tabId)
+      if (tabIdIndex < 0) return false
+      videos[tabIdIndex][key] = value
+      chrome.storage.local.set({ bindVideoReferrer: videos }, function() {
+        console.log('set videos :>> ', videos)
+      })
+    }
+  })
+}
+
 const querySiteDomain = function(url) {
   return new URL(url).host.replace(/www\./, '')
 }
 
-const queryThumbnailUrl = function(url) {
+const queryThumbnailUrl = function(url, tabId) {
   const _url = new URL(url)
   const host = _url.host
+  console.log('queryThumbnail host :>>', host)
 
   if (host.includes('.youtube.')) {
     const videoId = _url.searchParams.get('v')
     return `https://img.youtube.com/vi/${videoId}/0.jpg`
+  }
+  if (host.includes('amazon.')) {
+    chrome.tabs.sendMessage(tabId, { call: 'querySelector', selector: '._3lfkZ_' }, function(response) {
+      if (response.message !== '') {
+        const dom = document.createElement('div')
+        dom.innerHTML = response.message
+        // ここでアップデートする関数を用意しておく
+        updatVideoRefer(tabId, 'img', dom.querySelector('img').src)
+      }
+    })
+  }
+  if (host.includes('soundcloud.com')) {
+    chrome.tabs.sendMessage(
+      tabId,
+      { call: 'querySelector', selector: '.playbackSoundBadge a.sc-media-image' },
+      function(response) {
+        if (response.message !== '') {
+          const dom = document.createElement('div')
+          dom.innerHTML = response.message
+          console.log(dom.querySelector('span.sc-artwork'))
+          let img = dom.querySelector('span.sc-artwork').style.backgroundImage.match(/url\("(.*)"\)/)[1]
+          img.replace(/t120x120/g, 't500x500')
+          // ここでアップデートする関数を用意しておく
+          updatVideoRefer(tabId, 'img', img)
+        }
+      }
+    )
   }
   // どのサイトのURLなのかを判定
   // youtubeならvideo id からurlを生成
@@ -53,7 +84,7 @@ const bindVideoInfo = function(tabId, changeInfo, tab) {
     siteName: querySiteDomain(tab.url),
     url: tab.url,
     favicon: tab.favIconUrl,
-    img: queryThumbnailUrl(tab.url),
+    img: queryThumbnailUrl(tab.url, tabId),
     audiable: false
   }
 }
