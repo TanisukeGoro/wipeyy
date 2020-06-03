@@ -14,70 +14,8 @@
       background-color: rgb(56, 56, 56);
       font-family: system-ui, "Hiragino Kaku Gothic ProN", sans-serif;
     }
-
-    .d-flex {
-      margin: 5px;
-      border-radius: 5px;
-      display: flex;
-      height: 150px;
-      /* margin-bottom: 10px; */
-    }
-
-    .img-cover {
-      background-size: 100%;
-      width: 100%;
-      background-position: center;
-    }
-    .title{
-      width: 300px;
-      margin-left: 20px;
-    }
-    h3{
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      margin-bottom: 5px;
-    }
-    .pointer {
-      cursor: pointer;
-    }
-
-    p.siteest3:before{
-      content:"";
-      display:inline-block;
-      width:1em;
-      height:1em;
-      background-size:contain;
-    }
-    .site{
-      vertical-align:middle;
-      display:inline;
-    }
-    .icon {
-      vertical-align:middle;
-      height: 16px;
-    }
-    svg{
-      height: 1rem;
-      width: 1rem;
-      vertical-align: text-bottom;
-    }
-
   </style>
-  <div id="app">
-    <div class="d-flex " v-for="(item, index) in items" :key="index">
-      <div class="img-cover" :style="{ 
-        backgroundImage: `linear-gradient(${item.backgroundColor}, ${item.backgroundColor}), url('${item.img}')`,
-        color: item.color }">
-        <div class="title pointer" @click="openTab(item)">
-          <h3><svg-base :icon-color="item.color"><open-tab /></svg-base>{{ item.title }}</h3>
-          <img class="icon" :src="item.favicon">
-          <div class="site">{{ item.siteName }}</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
+  <div id="app"></div>
   <script src="popup.js"></script>
 </body>
 
