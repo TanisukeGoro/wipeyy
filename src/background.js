@@ -1,4 +1,4 @@
-let GLOBAL_VIDEO_REFERER = []
+// let GLOBAL_VIDEO_REFERER = []
 
 // 重複したJsonのindexが前の方を排除する
 const removeDuplicates = function(jsonObject, searchKey) {
