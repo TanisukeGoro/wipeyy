@@ -1,6 +1,11 @@
 <template>
   <div>
-    <div v-for="(item, index) in items" :key="index" class="d-flex">
+    <div
+      v-for="(item, index) in items"
+      :key="index"
+      class="d-flex"
+      :style="{ backgroundColor: `${linkedTabId === item.tabId ? '#a6d06f' : ''}` }"
+    >
       <div
         class="img-cover"
         :style="{
@@ -8,12 +13,15 @@
           color: item.color
         }"
       >
-        <div class="title pointer" @click="openTab(item)">
+        <div class="ml-20 pointer" @click="openTab(item)">
           <h3>
             <svg-base :icon-color="item.color"><open-tab /></svg-base>{{ item.title }}
           </h3>
           <img class="icon" :src="item.favicon" />
           <div class="site">{{ item.siteName }}</div>
+        </div>
+        <div class="ml-20" @click="linkTabId(item.tabId)">
+          {{ linkedTabId === item.tabId ? 'この動画をリンク中です' : 'この動画をリンクする' }}
         </div>
       </div>
     </div>
@@ -35,12 +43,17 @@ export default {
     return {
       message: 'Hello Vue!',
       items: [],
-      openTabIcon: ExtensionService.getResourceUrl('./icon/open-tab.png')
+      openTabIcon: ExtensionService.getResourceUrl('./icon/open-tab.png'),
+      linkedTabId: ''
     }
   },
   created() {
     // this.bindVideoReferrer();
     const self = this
+    chrome.storage.local.get(['linkedTabId'], function(result) {
+      console.log('tabId :>>', result)
+      self.linkedTabId = result.linkedTabId
+    })
     chrome.storage.local.get(['bindVideoReferrer'], function(result) {
       self.items = result.bindVideoReferrer
       chrome.tabs.query({}, function(tabs) {
@@ -107,6 +120,13 @@ export default {
       chrome.storage.local.get(['bindVideoReferrer'], function(result) {
         self.items = result.bindVideoReferrer
       })
+    },
+    linkTabId(id) {
+      console.log('id :>>', id)
+      const self = this
+      chrome.storage.local.set({ linkedTabId: id }, function() {
+        self.linkedTabId = id
+      })
     }
   }
 }
@@ -114,7 +134,7 @@ export default {
 
 <style>
 .d-flex {
-  margin: 5px;
+  padding: 3px;
   border-radius: 5px;
   display: flex;
   height: 150px;
@@ -128,6 +148,8 @@ export default {
 }
 .title {
   width: 300px;
+}
+.ml-20 {
   margin-left: 20px;
 }
 h3 {

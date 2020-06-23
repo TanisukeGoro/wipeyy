@@ -43,10 +43,11 @@ const queryThumbnailUrl = function(url, tabId) {
     return `https://img.youtube.com/vi/${videoId}/0.jpg`
   }
   if (host.includes('amazon.')) {
-    chrome.tabs.sendMessage(tabId, { call: 'querySelector', selector: '._3lfkZ_' }, function(response) {
+    chrome.tabs.sendMessage(tabId, { call: 'querySelector', selector: '._3AaXaE' }, function(response) {
       if (response.message !== '') {
         const dom = document.createElement('div')
         dom.innerHTML = response.message
+        console.log('dom..src :>>', dom.querySelector('img').src)
         // ここでアップデートする関数を用意しておく
         updatVideoRefer(tabId, 'img', dom.querySelector('img').src)
       }
@@ -159,3 +160,19 @@ chrome.tabs.onRemoved.addListener(function(tabId, isWindowClosing) {
 // indexTab => トラッキングを開始するためにchrome.storageに追加
 // removeIndexTab => トラッキングを解除するためにchrome.storageから削除
 // 動画視聴中に検索画面から他のページに遷移した際にどうするか？
+chrome.commands.onCommand.addListener(function(command) {
+  console.log('command :>>', command)
+  chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+    // アクティブなタブ tabs[0] のcontent scriptsにメッセージを送信
+    chrome.storage.local.get(['linkedTabId'], function(result) {
+      // タブのチェック
+      const tabId = result.linkedTabId
+      chrome.tabs.sendMessage(tabId, { sendCommand: command }, function(response) {
+        try {
+          console.log(response.farewell)
+        } catch (error) {}
+      })
+    })
+  })
+  return 0
+})
