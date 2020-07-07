@@ -3,7 +3,7 @@
     "name": "__MSG_appName__",
     "description": "__MSG_appDesc__",
     "short_name": "wipeyy",
-    "version": "0.3.2",
+    "version": "0.4.0",
     "author": "Abe Keishi",
     "default_locale": "en",
     "browser_action": {
