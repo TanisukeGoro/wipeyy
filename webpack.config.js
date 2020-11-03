@@ -7,6 +7,8 @@ module.exports = function(webpackEnv, options) {
   const isEnvProduction = options.mode === 'production'
   const outputPath = isEnvProduction ? __dirname + '/dist' : __dirname + '/dev'
 
+  console.log(outputPath)
+
   return {
     // モードの設定、v4系以降はmodeを指定しないと、webpack実行時に警告が出る
     mode: 'development',

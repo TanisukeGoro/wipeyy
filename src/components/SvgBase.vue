@@ -1,8 +1,8 @@
 <template>
-  <svg :viewBox="viewBox" :aria-labelledby="iconName" role="presentation">
-    <title :id="iconName" lang="en">{{ iconName }} icon</title>
+  <svg :viewBox="viewBox" :aria-labelledby="iconName" role="presentation" :style="{ width: width, height: height }">
+    <title :id="iconName" lang="en">{{ iconName }}</title>
     <g :fill="iconColor">
-      <slot />
+      <slot :icon-color="iconColor" />
     </g>
   </svg>
 </template>
@@ -10,40 +10,20 @@
 <script>
 export default {
   props: {
-    iconName: {
-      type: String,
-      default: 'open-tab'
-    },
-    x: {
-      type: Number,
-      default: 0
-    },
-    y: {
-      type: Number,
-      default: 0
-    },
-    width: {
-      type: [Number, String],
-      default: 30
-    },
-    height: {
-      type: [Number, String],
-      default: 30
-    },
-    iconColor: {
-      type: String,
-      default: '#fff'
-    }
+    viewBox: { type: String, default: '0 0 24 24' },
+    iconName: { type: String, default: '' },
+    width: { type: [Number, String], default: 18 },
+    height: { type: [Number, String], default: 18 },
+    iconColor: { type: String, default: 'currentColor' }
   },
-  computed: {
-    viewBox() {
-      return `${this.x} ${this.y} ${this.width} ${this.height}`
-    }
-  },
-  watch: {
-    x() {
-      console.log('this.ｘ :>>', this.ｘ)
-    }
+  mounted() {
+    console.log('this.iconColor :>>', this.iconColor)
   }
 }
 </script>
+
+<style scoped>
+svg {
+  vertical-align: text-top;
+}
+</style>

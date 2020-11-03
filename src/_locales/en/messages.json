@@ -6,16 +6,16 @@
         "message": "A Floating Mini Player for Youtube that can be Operated From Anywhere."
     },
     "L000000": {
-        "message": "Link to movie"
+        "message": "start picture in picture"
     },
     "L000001": {
-        "message": "Linked Video Title"
+        "message": "link to movie"
     },
     "L000002": {
-        "message": "Option(for https://dotinstall.com/)"
+        "message": "active!"
     },
     "L000003": {
-        "message": "Continuous Playback"
+        "message": "close tab"
     },
     "L000004": {
         "message": "Auto Compleate"
