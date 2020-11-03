@@ -63,7 +63,7 @@ const queryThumbnailUrl = function(url, tabId) {
           dom.innerHTML = response.message
           console.log(dom.querySelector('span.sc-artwork'))
           let img = dom.querySelector('span.sc-artwork').style.backgroundImage.match(/url\("(.*)"\)/)[1]
-          img.replace(/t120x120/g, 't500x500')
+          img = img.replace(/t120x120/g, 't500x500')
           // ここでアップデートする関数を用意しておく
           updatVideoRefer(tabId, 'img', img)
         }

@@ -1,27 +1,39 @@
 <template>
   <div>
-    <div
-      v-for="(item, index) in items"
-      :key="index"
-      class="d-flex"
-      :style="{ backgroundColor: `${linkedTabId === item.tabId ? '#a6d06f' : ''}` }"
-    >
-      <div
-        class="img-cover"
-        :style="{
-          backgroundImage: `linear-gradient(${item.backgroundColor}, ${item.backgroundColor}), url('${item.img}')`,
-          color: item.color
-        }"
-      >
-        <div class="ml-20 pointer" @click="openTab(item)">
-          <h3>
-            <svg-base :icon-color="item.color"><open-tab /></svg-base>{{ item.title }}
-          </h3>
-          <img class="icon" :src="item.favicon" />
-          <div class="site">{{ item.siteName }}</div>
+    <div v-for="(item, index) in items" :key="index" class="d-flex">
+      <div class="browser-view" :style="{ backgroundColor: `${linkedTabId === item.tabId ? '#a6d06f' : ''}` }">
+        <div class="menu-bar">
+          <div class="col-left">
+            <button class="dot delete-tab" @click="deleteTab(item)">
+              <svg-base class="btn-svg" width="9" height="9" :icon-name="$i18n('L000003')"
+                ><close icon-color="#000"
+              /></svg-base>
+            </button>
+            <button class="dot minimize-tab">
+              <svg-base class="btn-svg" width="9" height="9"><minimize icon-color="#000"/></svg-base>
+            </button>
+            <button class="dot open-tab" @click="openTab(item)">
+              <svg-base class="btn-svg" width="9" height="9"><open-tab icon-color="#000"/></svg-base>
+            </button>
+            <img :src="item.favicon" alt="" class="favicon" />
+          </div>
+          <div class="col-middle">
+            <p class="search-box">{{ item.url }}</p>
+          </div>
+          <div class="col-right">
+            <svg-base><settings /></svg-base>
+          </div>
         </div>
-        <div class="ml-20" @click="linkTabId(item.tabId)">
-          {{ linkedTabId === item.tabId ? 'この動画をリンク中です' : 'この動画をリンクする' }}
+        <div class="container" :style="{ color: item.color }">
+          <div class="media-artwork">
+            <img :src="item.img" alt="" />
+          </div>
+          <div class="content">
+            <h3>{{ item.title }}</h3>
+            <div class="ml-20" @click="linkTabId(item.tabId)">
+              {{ linkedTabId === item.tabId ? $i18n('L000002') : $i18n('L000001') }}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -31,13 +43,19 @@
 <script>
 import * as imgClient from './utils/imgRenderClient'
 import ExtensionService from './utils/ExtensionService'
-import openTab from './components/icon/openTab.vue'
+import OpenTab from './components/icon/openTab.vue'
+import Close from './components/icon/close.vue'
+import Minimize from './components/icon/minimize.vue'
+import Settings from './components/icon/settings.vue'
 import SvgBase from './components/SvgBase.vue'
 
 export default {
   components: {
     SvgBase,
-    openTab
+    Settings,
+    OpenTab,
+    Close,
+    Minimize
   },
   data() {
     return {
@@ -50,6 +68,12 @@ export default {
   created() {
     // this.bindVideoReferrer();
     const self = this
+    chrome.storage.onChanged.addListener(function(changes) {
+      for (var key in changes) {
+        var storageChange = changes[key]
+        if (key === 'bindVideoReferrer') self.items = storageChange.newValue
+      }
+    })
     chrome.storage.local.get(['linkedTabId'], function(result) {
       console.log('tabId :>>', result)
       self.linkedTabId = result.linkedTabId
@@ -109,6 +133,9 @@ export default {
         chrome.tabs.update(item.tabId, { active: true })
       })
     },
+    deleteTab(item) {
+      chrome.tabs.remove(item.tabId)
+    },
     tabIdindexOf: function(jsonObject, value) {
       return jsonObject.map(json => json.tabId).indexOf(value)
     },
@@ -133,53 +160,125 @@ export default {
 </script>
 
 <style>
-.d-flex {
-  padding: 3px;
-  border-radius: 5px;
+/* * {
+  border: solid 0.1px red;
+} */
+.browser-view {
+  width: 315px;
+  height: 200px;
+  border: solid #707070 0.5px;
+}
+
+.menu-bar {
   display: flex;
-  height: 150px;
+  background-color: #aaa;
+  height: 32px;
+  width: 100%;
+}
+.col-left {
+  display: flex;
+}
+
+.col-middle {
+  flex-grow: 2;
+}
+
+.col-right {
+}
+
+.dot {
+  height: 15px;
+  width: 15px;
+  margin-top: 8px;
+  margin-left: 5px;
+  padding: 0;
+  background-color: #bbb;
+  border-radius: 50%;
+  border: solid #707070 1px;
+  display: inline-block;
+}
+
+.dot:focus {
+  outline: none; /** FIXME: use focus-visible ? */
+}
+
+.btn-svg {
+  margin-top: 2px;
+  opacity: 0;
+}
+
+.col-left:hover .btn-svg {
+  opacity: 1;
+}
+
+.favicon {
+  vertical-align: middle;
+  margin: 8px 5px;
+  height: 15px;
+}
+
+.delete-tab {
+  background-color: #ed594a;
+}
+
+.minimize-tab {
+  background-color: #fdd800;
+}
+
+.open-tab {
+  background-color: #5ac05a;
+}
+
+.search-box {
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 200px;
+  background-color: #fff;
+  padding-right: 10px;
+  padding: 4px 10px 4px 4px;
+  margin-top: 4px;
+  border: solid #707070 1px;
+}
+
+.d-flex {
+  padding: 6px 12px;
+  /* border-radius: 5px; */
+  display: flex;
+  /* height: 180px; */
   /* margin-bottom: 10px; */
 }
 
-.img-cover {
-  background-size: 100%;
-  width: 100%;
-  background-position: center;
-}
-.title {
-  width: 300px;
-}
-.ml-20 {
-  margin-left: 20px;
-}
-h3 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  margin-bottom: 5px;
-}
-.pointer {
-  cursor: pointer;
+.container {
+  position: relative;
+  width: 315px;
+  padding: 6px 0;
 }
 
-p.siteest3:before {
-  content: '';
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  background-size: contain;
+.media-artwork {
+  z-index: 0;
+  text-align: center;
 }
-.site {
-  vertical-align: middle;
-  display: inline;
+
+.media-artwork img {
+  object-fit: cover;
+  margin: auto;
+  width: 285px;
+  height: 150px;
 }
-.icon {
-  vertical-align: middle;
-  height: 16px;
+
+.content {
+  position: absolute;
+  z-index: 20;
+  top: 10px;
+  left: 30px;
 }
-svg {
-  height: 1rem;
-  width: 1rem;
-  vertical-align: text-bottom;
+
+.content h3 {
+  width: 260px;
+  margin: 0 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 </style>
