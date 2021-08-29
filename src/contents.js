@@ -27,11 +27,11 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 const hasVideoTags = () => document.querySelectorAll('video').length
 const getVideos = () => 'ビデオ'
 // FIXME: 適当にやってるけどちゃんとしたvideo定義みたいなのを作って分岐するようにする
-const getVideoElem = element => {
+const getVideoElem = elements => {
   if (window.location.host.includes('amazon')) {
-    return element[5]
+    return Array.from(elements).find(node => node.getAttribute('src').includes('amazon.co.jp'))
   } else {
-    return element[0]
+    return elements[0]
   }
 }
 
