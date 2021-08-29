@@ -26,6 +26,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 const hasVideoTags = () => document.querySelectorAll('video').length
 const getVideos = () => 'ビデオ'
+// FIXME: 適当にやってるけどちゃんとしたvideo定義みたいなのを作って分岐するようにする
+const getVideoElem = element => {
+  if (window.location.host.includes('amazon')) {
+    return element[5]
+  } else {
+    return element[0]
+  }
+}
 
 // コマンドを受け付けて、それに対してビデオの操作を実現する
 const operationVideo = (operationCommand, responseStatus = true) => {
@@ -43,7 +51,7 @@ const operationVideo = (operationCommand, responseStatus = true) => {
 
   if (isVideoElems.length === 0) return false
 
-  const isVideoElem = isVideoElems[0]
+  const isVideoElem = getVideoElem(isVideoElems)
   console.log('isVideoElem :>>', isVideoElem)
   const videoElem = new VideoRefer(isVideoElem)
 
