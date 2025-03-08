@@ -88,7 +88,7 @@ const bindVideoInfo = function(tabId, changeInfo, tab) {
 };
 
 const indexTab = function(tabId, changeInfo, tab) {
-    chrome.storage.local.get(['bindVideoReferrer'], function(result) {
+    chrome.storage.local.get(['bindVideoReferrer', 'autoLinkEnabled'], function(result) {
         let videos = result.bindVideoReferrer || [];
         if (videos.length === 0) {
             videos = [bindVideoInfo(tabId, changeInfo, tab)];
@@ -98,6 +98,14 @@ const indexTab = function(tabId, changeInfo, tab) {
         videos = removeDuplicates(videos, 'tabId');
         chrome.storage.local.set({ bindVideoReferrer: videos }, function() {
             console.log('set videos :>> ', videos);
+            
+            // 自動リンク機能が有効で、新しく検出された動画があれば自動的にリンク
+            const autoLinkEnabled = result.autoLinkEnabled || false;
+            if (autoLinkEnabled) {
+                chrome.storage.local.set({ linkedTabId: tabId }, function() {
+                    console.log('Auto-linked tab ID :>> ', tabId);
+                });
+            }
         });
     });
 };

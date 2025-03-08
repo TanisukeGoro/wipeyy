@@ -22,5 +22,101 @@
     },
     "L000100": {
         "message": "ショートカット設定"
+    },
+    "settings": {
+        "message": "設定"
+    },
+    "appearance": {
+        "message": "外観"
+    },
+    "theme": {
+        "message": "テーマ"
+    },
+    "light": {
+        "message": "ライト"
+    },
+    "dark": {
+        "message": "ダーク"
+    },
+    "system": {
+        "message": "システム"
+    },
+    "behavior": {
+        "message": "動作"
+    },
+    "autoLinkVideos": {
+        "message": "新しい動画を自動でリンクする"
+    },
+    "autoLinkDescription": {
+        "message": "新しく検出された動画を自動的にリンクします"
+    },
+    "about": {
+        "message": "Wipeyyについて"
+    },
+    "howToUse": {
+        "message": "使い方"
+    },
+    "gettingStarted": {
+        "message": "はじめに"
+    },
+    "findVideo": {
+        "message": "動画を見つける"
+    },
+    "findVideoDescription": {
+        "message": "動画のあるページに移動します。動画が検出されると、Wipeyyアイコンが表示されます。"
+    },
+    "iconAppears": {
+        "message": "動画が検出されるとWipeyyアイコンが表示されます"
+    },
+    "saveVideo": {
+        "message": "動画を保存する"
+    },
+    "saveVideoDescription": {
+        "message": "Wipeyyアイコンをクリックするか、Alt+Sを押して現在の動画をコレクションに保存します。"
+    },
+    "accessVideos": {
+        "message": "動画にアクセスする"
+    },
+    "accessVideosDescription": {
+        "message": "ブラウザツールバーのWipeyy拡張機能アイコンをクリックするか、Alt+Wを押して保存した動画を表示します。"
+    },
+    "linkVideos": {
+        "message": "動画をリンクする"
+    },
+    "linkVideosDescription": {
+        "message": "任意の動画の「この動画をリンクする」をクリックして、ピクチャーインピクチャー表示用のアクティブな動画にします。"
+    },
+    "tips": {
+        "message": "ヒントとコツ"
+    },
+    "keyboardShortcuts": {
+        "message": "キーボードショートカット"
+    },
+    "togglePopup": {
+        "message": "Wipeyyポップアップの切り替え"
+    },
+    "saveCurrentVideo": {
+        "message": "現在の動画を保存する"
+    },
+    "multipleWindows": {
+        "message": "複数のウィンドウ"
+    },
+    "multipleWindowsDescription": {
+        "message": "Wipeyyはすべてのブラウザウィンドウとタブで動作します。"
+    },
+    "noSavedVideos": {
+        "message": "保存された動画がありません"
+    },
+    "saveVideoPrompt": {
+        "message": "ブラウジング中にWipeyyを使用して動画を保存してください"
+    },
+    "learnHowToUse": {
+        "message": "使い方を学ぶ"
+    },
+    "noImage": {
+        "message": "画像なし"
+    },
+    "noTitle": {
+        "message": "タイトルなし"
     }
 }

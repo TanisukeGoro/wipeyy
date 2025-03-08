@@ -18,9 +18,105 @@
         "message": "close tab"
     },
     "L000004": {
-        "message": "Auto Compleate"
+        "message": "Auto Complete"
     },
     "L000100": {
         "message": "Shortcut Settings"
+    },
+    "settings": {
+        "message": "Settings"
+    },
+    "appearance": {
+        "message": "Appearance"
+    },
+    "theme": {
+        "message": "Theme"
+    },
+    "light": {
+        "message": "Light"
+    },
+    "dark": {
+        "message": "Dark"
+    },
+    "system": {
+        "message": "System"
+    },
+    "behavior": {
+        "message": "Behavior"
+    },
+    "autoLinkVideos": {
+        "message": "Auto-link new videos"
+    },
+    "autoLinkDescription": {
+        "message": "Automatically link to newly detected videos"
+    },
+    "about": {
+        "message": "About"
+    },
+    "howToUse": {
+        "message": "How to Use"
+    },
+    "gettingStarted": {
+        "message": "Getting Started"
+    },
+    "findVideo": {
+        "message": "Find a video"
+    },
+    "findVideoDescription": {
+        "message": "Navigate to any page with a video. When a video is detected, the Wipeyy icon will appear."
+    },
+    "iconAppears": {
+        "message": "The Wipeyy icon appears when a video is detected"
+    },
+    "saveVideo": {
+        "message": "Save the video"
+    },
+    "saveVideoDescription": {
+        "message": "Click the Wipeyy icon or press Alt+S to save the current video to your collection."
+    },
+    "accessVideos": {
+        "message": "Access your videos"
+    },
+    "accessVideosDescription": {
+        "message": "Click the Wipeyy extension icon in your browser toolbar or press Alt+W to view your saved videos."
+    },
+    "linkVideos": {
+        "message": "Link videos"
+    },
+    "linkVideosDescription": {
+        "message": "Click 'link to movie' on any video to make it your active video for picture-in-picture view."
+    },
+    "tips": {
+        "message": "Tips & Tricks"
+    },
+    "keyboardShortcuts": {
+        "message": "Keyboard Shortcuts"
+    },
+    "togglePopup": {
+        "message": "Toggle Wipeyy popup"
+    },
+    "saveCurrentVideo": {
+        "message": "Save current video"
+    },
+    "multipleWindows": {
+        "message": "Multiple Windows"
+    },
+    "multipleWindowsDescription": {
+        "message": "Wipeyy works across all your browser windows and tabs."
+    },
+    "noSavedVideos": {
+        "message": "No saved videos"
+    },
+    "saveVideoPrompt": {
+        "message": "Use Wipeyy to save videos while browsing"
+    },
+    "learnHowToUse": {
+        "message": "Learn how to use"
+    },
+    "noImage": {
+        "message": "No image"
+    },
+    "noTitle": {
+        "message": "No title"
     }
 }

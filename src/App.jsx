@@ -3,10 +3,12 @@ import SvgBase from './components/SvgBase';
 import Close from './components/icon/Close';
 import Minimize from './components/icon/Minimize';
 import OpenTab from './components/icon/OpenTab';
-import Settings from './components/icon/Settings';
+import SettingsIcon from './components/icon/Settings';
 import ExtensionService from './utils/ExtensionService';
 import * as imgClient from './utils/imgRenderClient';
 import { getMessage } from './utils/i18n';
+import SettingsPage from './components/Settings';
+import HowToUse from './components/HowToUse';
 
 import './App.css';
 
@@ -14,15 +16,21 @@ const App = () => {
     const [items, setItems] = useState([]);
     const [linkedTabId, setLinkedTabId] = useState('');
     const [theme, setTheme] = useState('light');
+    const [currentPage, setCurrentPage] = useState('home'); // 'home', 'settings', or 'howToUse'
 
     useEffect(() => {
         // テーマの設定
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        setTheme(prefersDark ? 'dark' : 'light');
+        chrome.storage.local.get(['theme'], function(result) {
+            if (result.theme === 'system') {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                setTheme(prefersDark ? 'dark' : 'light');
+            } else {
+                setTheme(result.theme || 'light');
+            }
+        });
 
         // 保存されたタブIDをロード
         chrome.storage.local.get(['linkedTabId'], function(result) {
-            console.log('tabId :>>', result);
             setLinkedTabId(result.linkedTabId || '');
         });
 
@@ -87,6 +95,14 @@ const App = () => {
                 const storageChange = changes[key];
                 if (key === 'bindVideoReferrer') {
                     setItems(storageChange.newValue || []);
+                } else if (key === 'theme') {
+                    const newTheme = storageChange.newValue;
+                    if (newTheme === 'system') {
+                        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                        setTheme(prefersDark ? 'dark' : 'light');
+                    } else {
+                        setTheme(newTheme);
+                    }
                 }
             }
         };
@@ -98,6 +114,13 @@ const App = () => {
             chrome.storage.onChanged.removeListener(storageListener);
         };
     }, []);
+
+    // テーマを切り替える処理
+    const toggleTheme = () => {
+        const newTheme = theme === 'light' ? 'dark' : 'light';
+        setTheme(newTheme);
+        chrome.storage.local.set({ theme: newTheme });
+    };
 
     // タブを開く処理
     const openTab = item => {
@@ -123,25 +146,46 @@ const App = () => {
         });
     };
 
-    // テーマを切り替える処理
-    const toggleTheme = () => {
-        setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
-    };
+    // ページレンダリング
+    if (currentPage === 'settings') {
+        return <SettingsPage onBack={() => setCurrentPage('home')} />;
+    }
 
+    if (currentPage === 'howToUse') {
+        return <HowToUse onBack={() => setCurrentPage('home')} />;
+    }
+
+    // ホーム画面
     return (
         <div data-theme={theme} className="min-h-screen bg-base-200 p-4">
             <div className="flex justify-between items-center mb-4">
                 <h1 className="text-xl font-bold text-primary">Wipeyy</h1>
-                <button onClick={toggleTheme} className="btn btn-sm btn-circle btn-ghost">
-                    {theme === 'light' ? '🌙' : '☀️'}
-                </button>
+                <div className="flex gap-2">
+                    <button onClick={() => setCurrentPage('howToUse')} className="btn btn-sm btn-circle btn-ghost">
+                        <span className="text-lg">❓</span>
+                    </button>
+                    <button onClick={() => setCurrentPage('settings')} className="btn btn-sm btn-circle btn-ghost">
+                        <SvgBase width={16} height={16}>
+                            <SettingsIcon />
+                        </SvgBase>
+                    </button>
+                    <button onClick={toggleTheme} className="btn btn-sm btn-circle btn-ghost">
+                        {theme === 'light' ? '🌙' : '☀️'}
+                    </button>
+                </div>
             </div>
 
             <div className="grid grid-cols-1 gap-4">
                 {items.length === 0 ? (
                     <div className="card bg-base-100 shadow-xl p-6 text-center">
-                        <h3 className="font-semibold">保存されたビデオがありません</h3>
-                        <p className="text-sm mt-2">ビデオを視聴中にWipeyyを使ってビデオを保存してください</p>
+                        <h3 className="font-semibold">{getMessage('noSavedVideos')}</h3>
+                        <p className="text-sm mt-2">{getMessage('saveVideoPrompt')}</p>
+                        <button 
+                            onClick={() => setCurrentPage('howToUse')} 
+                            className="btn btn-sm btn-primary mt-4"
+                        >
+                            {getMessage('learnHowToUse')}
+                        </button>
                     </div>
                 ) : (
                     items.map((item, index) => (
@@ -180,9 +224,9 @@ const App = () => {
 
                                 <div className="url-display">{item.url}</div>
 
-                                <button className="btn btn-circle btn-xs btn-ghost">
+                                <button className="btn btn-circle btn-xs btn-ghost opacity-0 group-hover:opacity-100">
                                     <SvgBase width={14} height={14}>
-                                        <Settings />
+                                        <SettingsIcon />
                                     </SvgBase>
                                 </button>
                             </div>
@@ -192,7 +236,7 @@ const App = () => {
                                     <img src={item.img} alt={item.title} className="card-image" />
                                 ) : (
                                     <div className="card-image bg-gray-200 flex items-center justify-center">
-                                        <span className="text-gray-400">画像なし</span>
+                                        <span className="text-gray-400">{getMessage('noImage')}</span>
                                     </div>
                                 )}
                             </figure>
@@ -201,7 +245,7 @@ const App = () => {
                                 className="card-body p-4"
                                 style={{ backgroundColor: item.backgroundColor, color: item.color }}
                             >
-                                <h2 className="card-title">{item.title || 'タイトルなし'}</h2>
+                                <h2 className="card-title">{item.title || getMessage('noTitle')}</h2>
 
                                 <div className="card-actions justify-end mt-2">
                                     <button onClick={() => linkTabId(item.tabId)} className="link-button">
