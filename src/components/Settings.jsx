@@ -5,27 +5,72 @@ import SvgBase from './SvgBase';
 
 const Settings = ({ onBack }) => {
     const [theme, setTheme] = useState('light');
+    const [currentTheme, setCurrentTheme] = useState('light'); // 実際に適用するテーマ
     const [autoLinkEnabled, setAutoLinkEnabled] = useState(false);
     
     useEffect(() => {
         // 設定をロード
         chrome.storage.local.get(['theme', 'autoLinkEnabled'], (result) => {
-            if (result.theme) setTheme(result.theme);
+            const savedTheme = result.theme || 'light';
+            setTheme(savedTheme);
+            
+            // システムテーマの場合は、システムの設定に合わせる
+            if (savedTheme === 'system') {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                setCurrentTheme(prefersDark ? 'dark' : 'light');
+            } else {
+                setCurrentTheme(savedTheme);
+            }
+            
             setAutoLinkEnabled(result.autoLinkEnabled || false);
         });
-    }, []);
-    
-    const saveSettings = () => {
-        chrome.storage.local.set({
-            theme,
-            autoLinkEnabled
-        }, () => {
-            // 保存完了時の処理
-        });
-    };
+        
+        // システムのテーマ変更を監視
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        const handleChange = (e) => {
+            if (theme === 'system') {
+                setCurrentTheme(e.matches ? 'dark' : 'light');
+            }
+        };
+        
+        // ストレージの変更を監視
+        const storageListener = changes => {
+            if (changes.theme) {
+                const newTheme = changes.theme.newValue;
+                setTheme(newTheme);
+                
+                if (newTheme === 'system') {
+                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    setCurrentTheme(prefersDark ? 'dark' : 'light');
+                } else {
+                    setCurrentTheme(newTheme);
+                }
+            }
+            
+            if (changes.autoLinkEnabled) {
+                setAutoLinkEnabled(changes.autoLinkEnabled.newValue);
+            }
+        };
+        
+        mediaQuery.addEventListener('change', handleChange);
+        chrome.storage.onChanged.addListener(storageListener);
+        
+        return () => {
+            mediaQuery.removeEventListener('change', handleChange);
+            chrome.storage.onChanged.removeListener(storageListener);
+        };
+    }, [theme]);
     
     const handleThemeChange = (newTheme) => {
         setTheme(newTheme);
+        
+        if (newTheme === 'system') {
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            setCurrentTheme(prefersDark ? 'dark' : 'light');
+        } else {
+            setCurrentTheme(newTheme);
+        }
+        
         chrome.storage.local.set({ theme: newTheme });
     };
     
@@ -35,7 +80,7 @@ const Settings = ({ onBack }) => {
     };
     
     return (
-        <div className="min-h-screen bg-base-200 p-4">
+        <div data-theme={currentTheme} className="min-h-screen bg-base-200 p-4">
             <div className="flex items-center mb-6">
                 <button onClick={onBack} className="btn btn-ghost btn-sm mr-2">
                     <SvgBase width={18} height={18}>
@@ -84,7 +129,7 @@ const Settings = ({ onBack }) => {
                             onChange={handleAutoLinkChange}
                         />
                     </label>
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p className="text-sm text-base-content opacity-70 mt-1">
                         {getMessage('autoLinkDescription')}
                     </p>
                 </div>
