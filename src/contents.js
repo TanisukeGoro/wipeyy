@@ -2,7 +2,7 @@ import ExtensionService from './utils/ExtensionService';
 import VideoRefer from './utils/VideoRefer';
 
 // background => contents_script
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.sendCommand && request.sendCommand !== '') {
         console.log('request.sendCommand :>>', request.sendCommand);
         const result = operationVideo(request.sendCommand);

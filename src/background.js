@@ -1,5 +1,5 @@
 // 重複したJsonのindexが前の方を排除する
-const removeDuplicates = function (jsonObject, searchKey) {
+const removeDuplicates = function(jsonObject, searchKey) {
     let obj = {};
     return Object.keys(
         jsonObject.reverse().reduce((prev, next) => {
@@ -9,29 +9,29 @@ const removeDuplicates = function (jsonObject, searchKey) {
     ).map(i => obj[i]);
 };
 
-const tabIdindexOf = function (jsonObject, value) {
+const tabIdIndexOf = function(jsonObject, value) {
     return jsonObject.map(json => json.tabId).indexOf(value);
 };
 
-const updatVideoRefer = function (tabId, key, value) {
-    chrome.storage.local.get(['bindVideoReferrer'], function (result) {
+const updateVideoRefer = function(tabId, key, value) {
+    chrome.storage.local.get(['bindVideoReferrer'], function(result) {
         let videos = result.bindVideoReferrer;
         if (videos !== undefined && videos.length !== 0) {
-            let tabIdIndex = tabIdindexOf(videos, tabId);
+            let tabIdIndex = tabIdIndexOf(videos, tabId);
             if (tabIdIndex < 0) return false;
             videos[tabIdIndex][key] = value;
-            chrome.storage.local.set({ bindVideoReferrer: videos }, function () {
+            chrome.storage.local.set({ bindVideoReferrer: videos }, function() {
                 console.log('set videos :>> ', videos);
             });
         }
     });
 };
 
-const querySiteDomain = function (url) {
+const querySiteDomain = function(url) {
     return new URL(url).host.replace(/www\./, '');
 };
 
-const queryThumbnailUrl = function (url, tabId) {
+const queryThumbnailUrl = function(url, tabId) {
     const _url = new URL(url);
     const host = _url.host;
     console.log('queryThumbnail host :>>', host);
@@ -42,13 +42,13 @@ const queryThumbnailUrl = function (url, tabId) {
     }
 
     if (host.includes('amazon.')) {
-        chrome.tabs.sendMessage(tabId, { call: 'querySelector', selector: '._3AaXaE' }, function (response) {
+        chrome.tabs.sendMessage(tabId, { call: 'querySelector', selector: '._3AaXaE' }, function(response) {
             if (response && response.message !== '') {
                 const dom = document.createElement('div');
                 dom.innerHTML = response.message;
                 console.log('dom..src :>>', dom.querySelector('img').src);
                 // ここでアップデートする関数を用意しておく
-                updatVideoRefer(tabId, 'img', dom.querySelector('img').src);
+                updateVideoRefer(tabId, 'img', dom.querySelector('img').src);
             }
         });
     }
@@ -57,7 +57,7 @@ const queryThumbnailUrl = function (url, tabId) {
         chrome.tabs.sendMessage(
             tabId,
             { call: 'querySelector', selector: '.playbackSoundBadge a.sc-media-image' },
-            function (response) {
+            function(response) {
                 if (response && response.message !== '') {
                     const dom = document.createElement('div');
                     dom.innerHTML = response.message;
@@ -65,7 +65,7 @@ const queryThumbnailUrl = function (url, tabId) {
                     let img = dom.querySelector('span.sc-artwork').style.backgroundImage.match(/url\("(.*)"\)/)[1];
                     img = img.replace(/t120x120/g, 't500x500');
                     // ここでアップデートする関数を用意しておく
-                    updatVideoRefer(tabId, 'img', img);
+                    updateVideoRefer(tabId, 'img', img);
                 }
             }
         );
@@ -74,7 +74,7 @@ const queryThumbnailUrl = function (url, tabId) {
     return '';
 };
 
-const bindVideoInfo = function (tabId, changeInfo, tab) {
+const bindVideoInfo = function(tabId, changeInfo, tab) {
     return {
         tabId,
         windowId: tab.windowId,
@@ -87,8 +87,8 @@ const bindVideoInfo = function (tabId, changeInfo, tab) {
     };
 };
 
-const indexTab = function (tabId, changeInfo, tab) {
-    chrome.storage.local.get(['bindVideoReferrer'], function (result) {
+const indexTab = function(tabId, changeInfo, tab) {
+    chrome.storage.local.get(['bindVideoReferrer'], function(result) {
         let videos = result.bindVideoReferrer || [];
         if (videos.length === 0) {
             videos = [bindVideoInfo(tabId, changeInfo, tab)];
@@ -96,19 +96,19 @@ const indexTab = function (tabId, changeInfo, tab) {
             videos.push(bindVideoInfo(tabId, changeInfo, tab));
         }
         videos = removeDuplicates(videos, 'tabId');
-        chrome.storage.local.set({ bindVideoReferrer: videos }, function () {
+        chrome.storage.local.set({ bindVideoReferrer: videos }, function() {
             console.log('set videos :>> ', videos);
         });
     });
 };
 
 // タブの更新イベントリスナー
-chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     console.log('tab :>> ', tab);
     if ('status' in changeInfo) {
         console.log('changeInfo.status :>> ', changeInfo.status);
         // 読み込んだらVideoタグをカウントしてインデックスをする
-        chrome.tabs.sendMessage(tabId, { call: 'hasVideo' }, function (response) {
+        chrome.tabs.sendMessage(tabId, { call: 'hasVideo' }, function(response) {
             if (response && response.message > 0) {
                 indexTab(tabId, changeInfo, tab);
             }
@@ -124,18 +124,18 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 });
 
 // タブの削除イベントリスナー
-chrome.tabs.onRemoved.addListener(function (tabId, isWindowClosing) {
+chrome.tabs.onRemoved.addListener(function(tabId, isWindowClosing) {
     console.log('tabId :>> ', tabId);
     console.log('isWindowClosing :>> ', isWindowClosing);
-    chrome.storage.local.get(['bindVideoReferrer'], function (result) {
+    chrome.storage.local.get(['bindVideoReferrer'], function(result) {
         let videos = result.bindVideoReferrer;
         console.log('get videos :>> ', videos);
         if (videos && videos.length !== 0) {
-            let tabIdIndex = tabIdindexOf(videos, tabId);
+            let tabIdIndex = tabIdIndexOf(videos, tabId);
             if (tabIdIndex < 0) return false;
             videos.splice(tabIdIndex, 1);
             videos = removeDuplicates(videos, 'tabId');
-            chrome.storage.local.set({ bindVideoReferrer: videos }, function () {
+            chrome.storage.local.set({ bindVideoReferrer: videos }, function() {
                 console.log('set videos :>> ', videos);
             });
         }
@@ -143,13 +143,13 @@ chrome.tabs.onRemoved.addListener(function (tabId, isWindowClosing) {
 });
 
 // コマンドのイベントリスナー
-chrome.commands.onCommand.addListener(function (command) {
+chrome.commands.onCommand.addListener(function(command) {
     console.log('command :>>', command);
-    chrome.storage.local.get(['linkedTabId'], function (result) {
+    chrome.storage.local.get(['linkedTabId'], function(result) {
         // タブのチェック
         const tabId = result.linkedTabId;
         if (tabId) {
-            chrome.tabs.sendMessage(tabId, { sendCommand: command }, function (response) {
+            chrome.tabs.sendMessage(tabId, { sendCommand: command }, function(response) {
                 try {
                     console.log(response && response.farewell);
                 } catch (error) {
