@@ -1,22 +1,26 @@
 import ExtensionService from './utils/ExtensionService'
 import VideoRefer from './utils/VideoRefer'
 
-// ① background => contents_script
+// background => contents_script
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  if (request.sendCommand !== '' && request.sendCommand !== undefined) {
+  if (request.sendCommand && request.sendCommand !== '') {
     console.log('request.sendCommand :>>', request.sendCommand)
-    operationVideo(request.sendCommand)
-    return sendResponse({ message: `response ${request.sendCommand}` })
+    const result = operationVideo(request.sendCommand)
+    return sendResponse({ message: `response ${request.sendCommand}`, farewell: result?.farewell })
   }
+
   if (request.call === 'hello') {
     return sendResponse({ message: 'response hello' })
   }
+
   if (request.call === 'getVideos') {
     return sendResponse({ message: getVideos(), id: request.id })
   }
+
   if (request.call === 'hasVideo') {
     return sendResponse({ message: hasVideoTags(), id: request.id })
   }
+
   if (request.call === 'querySelector') {
     const dom = document.querySelector(request.selector) || ''
     const html = dom !== '' ? dom.innerHTML : ''
@@ -26,10 +30,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 const hasVideoTags = () => document.querySelectorAll('video').length
 const getVideos = () => 'ビデオ'
-// FIXME: 適当にやってるけどちゃんとしたvideo定義みたいなのを作って分岐するようにする
+
+// 適切なvideo要素を取得する
 const getVideoElem = elements => {
   if (window.location.host.includes('amazon')) {
-    return Array.from(elements).find(node => node.getAttribute('src').includes('amazon.co.jp'))
+    return Array.from(elements).find(
+      node => node.getAttribute('src') && node.getAttribute('src').includes('amazon.co.jp')
+    )
   } else {
     return elements[0]
   }
@@ -39,13 +46,14 @@ const getVideoElem = elements => {
 const operationVideo = (operationCommand, responseStatus = true) => {
   ExtensionService.log('operationCommand')
   ExtensionService.log(operationCommand)
-  // videoタグを探索しておく。
+
+  // videoタグを探索
   const isVideoElems = Array.from(document.querySelectorAll('video'))
     .filter(video => video.readyState != 0)
     .filter(video => video.disablePictureInPicture == false)
     .sort((v1, v2) => {
-      const v1Rect = v1.getClientRects()[0]
-      const v2Rect = v1.getClientRects()[0]
+      const v1Rect = v1.getClientRects()[0] || { width: 0, height: 0 }
+      const v2Rect = v2.getClientRects()[0] || { width: 0, height: 0 }
       return v2Rect.width * v2Rect.height - v1Rect.width * v1Rect.height
     })
 
@@ -53,6 +61,9 @@ const operationVideo = (operationCommand, responseStatus = true) => {
 
   const isVideoElem = getVideoElem(isVideoElems)
   console.log('isVideoElem :>>', isVideoElem)
+
+  if (!isVideoElem) return false
+
   const videoElem = new VideoRefer(isVideoElem)
 
   switch (operationCommand) {

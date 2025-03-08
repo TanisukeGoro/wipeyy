@@ -1,46 +1,37 @@
 const path = require('path')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = function(webpackEnv, options) {
-  const isEnvDevelopment = options.mode === 'development'
   const isEnvProduction = options.mode === 'production'
-  const outputPath = isEnvProduction ? __dirname + '/dist' : __dirname + '/dev'
+  const outputPath = isEnvProduction ? path.resolve(__dirname, 'dist') : path.resolve(__dirname, 'dev')
 
   console.log(outputPath)
 
   return {
-    // モードの設定、v4系以降はmodeを指定しないと、webpack実行時に警告が出る
-    mode: 'development',
+    // モードの設定
+    mode: isEnvProduction ? 'production' : 'development',
     // エントリーポイントの設定
     entry: {
-      popup: ['./src/popup.js'], // メイン部分はここに記載
-      contents: ['./src/contents.js'], // contents script はここに記載
-      background: ['./src/background.js'] // background はここに記載
+      popup: './src/popup.jsx', // React用にjsxに変更
+      contents: './src/contents.js',
+      background: './src/background.js'
     },
     output: {
-      // The build folder.
-      // path: isEnvProduction ? paths.appBuild : undefined,
-      // path: isEnvProduction ? __dirname + '/dist' : __dirname + '/dev',
-      // filename: isEnvProduction
-      //   ? '[name].js'
-      //   : isEnvDevelopment && '[name].js',
-
       filename: '[name].js',
-      path: outputPath
+      path: outputPath,
+      clean: true // 出力ディレクトリをビルド前にクリーンアップ
     },
     module: {
       rules: [
         {
-          test: /\.js$/,
+          test: /\.(js|jsx)$/,
           exclude: /node_modules/,
           use: {
-            loader: 'babel-loader'
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env', ['@babel/preset-react', { runtime: 'automatic' }]]
+            }
           }
-        },
-        {
-          test: /\.vue$/,
-          loader: 'vue-loader'
         },
         {
           test: /\.css$/,
@@ -49,41 +40,36 @@ module.exports = function(webpackEnv, options) {
       ]
     },
     resolve: {
-      alias: {
-        vue$: 'vue/dist/vue.esm.js'
-      }
+      extensions: ['.js', '.jsx'] // .jsxファイルも解決できるように
     },
     plugins: [
-      new VueLoaderPlugin(),
-      new CopyWebpackPlugin([
-        {
-          from: './src/_locales',
-          to: outputPath + '/_locales'
-        }
-      ]),
-      new CopyWebpackPlugin([
-        {
-          from: './src/icon',
-          to: outputPath + '/icon'
-        }
-      ]),
-      new CopyWebpackPlugin([
-        {
-          context: 'src',
-          from: '**/*.html',
-          to: outputPath
-        }
-      ]),
-      new CopyWebpackPlugin([
-        {
-          context: 'src',
-          from: '**/manifest.json',
-          to: outputPath
-        }
-      ])
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: './src/_locales',
+            to: '_locales'
+          },
+          {
+            from: './src/icon',
+            to: 'icon'
+          },
+          {
+            from: '**/*.html',
+            to: '[name][ext]',
+            context: 'src'
+          },
+          {
+            from: '**/manifest.json',
+            to: '[name][ext]',
+            context: 'src'
+          }
+        ]
+      })
     ],
     devServer: {
-      contentBase: path.join(__dirname, 'dist'),
+      static: {
+        directory: path.join(__dirname, 'dist')
+      },
       compress: true,
       port: 3000
     }

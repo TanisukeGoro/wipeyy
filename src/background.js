@@ -1,5 +1,3 @@
-// let GLOBAL_VIDEO_REFERER = []
-
 // 重複したJsonのindexが前の方を排除する
 const removeDuplicates = function(jsonObject, searchKey) {
   let obj = {}
@@ -18,7 +16,7 @@ const tabIdindexOf = function(jsonObject, value) {
 const updatVideoRefer = function(tabId, key, value) {
   chrome.storage.local.get(['bindVideoReferrer'], function(result) {
     let videos = result.bindVideoReferrer
-    if (videos !== undefined || videos.length !== 0) {
+    if (videos !== undefined && videos.length !== 0) {
       let tabIdIndex = tabIdindexOf(videos, tabId)
       if (tabIdIndex < 0) return false
       videos[tabIdIndex][key] = value
@@ -42,9 +40,10 @@ const queryThumbnailUrl = function(url, tabId) {
     const videoId = _url.searchParams.get('v')
     return `https://img.youtube.com/vi/${videoId}/0.jpg`
   }
+
   if (host.includes('amazon.')) {
     chrome.tabs.sendMessage(tabId, { call: 'querySelector', selector: '._3AaXaE' }, function(response) {
-      if (response.message !== '') {
+      if (response && response.message !== '') {
         const dom = document.createElement('div')
         dom.innerHTML = response.message
         console.log('dom..src :>>', dom.querySelector('img').src)
@@ -53,12 +52,13 @@ const queryThumbnailUrl = function(url, tabId) {
       }
     })
   }
+
   if (host.includes('soundcloud.com')) {
     chrome.tabs.sendMessage(
       tabId,
       { call: 'querySelector', selector: '.playbackSoundBadge a.sc-media-image' },
       function(response) {
-        if (response.message !== '') {
+        if (response && response.message !== '') {
           const dom = document.createElement('div')
           dom.innerHTML = response.message
           console.log(dom.querySelector('span.sc-artwork'))
@@ -70,10 +70,7 @@ const queryThumbnailUrl = function(url, tabId) {
       }
     )
   }
-  // どのサイトのURLなのかを判定
-  // youtubeならvideo id からurlを生成
-  // amazonならcontents_scriptに命令を出してDOMからカバー画像URLを取得
-  //
+
   return ''
 }
 
@@ -90,17 +87,10 @@ const bindVideoInfo = function(tabId, changeInfo, tab) {
   }
 }
 
-/**
- * Incoming message from Extension background page
- */
-const addListener = function(func) {
-  chrome.runtime.onMessage.addListener.apply(chrome.runtime.onMessage, arguments)
-}
-
 const indexTab = function(tabId, changeInfo, tab) {
   chrome.storage.local.get(['bindVideoReferrer'], function(result) {
-    let videos = result.bindVideoReferrer
-    if (videos === undefined || videos.length === 0) {
+    let videos = result.bindVideoReferrer || []
+    if (videos.length === 0) {
       videos = [bindVideoInfo(tabId, changeInfo, tab)]
     } else {
       videos.push(bindVideoInfo(tabId, changeInfo, tab))
@@ -112,67 +102,60 @@ const indexTab = function(tabId, changeInfo, tab) {
   })
 }
 
-////////////////////////////////////////////////////////////////////////
-
+// タブの更新イベントリスナー
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
   console.log('tab :>> ', tab)
-  if (changeInfo.hasOwnProperty('status')) {
+  if ('status' in changeInfo) {
     console.log('changeInfo.status :>> ', changeInfo.status)
     // 読み込んだらVideoタグをカウントしてインデックスをする
-    chrome.tabs.sendMessage(tabId, { call: 'hasVideo' }, function(doc) {
-      console.log('doc :>> ', doc)
-      if (Number(doc) > 0) {
+    chrome.tabs.sendMessage(tabId, { call: 'hasVideo' }, function(response) {
+      if (response && response.message > 0) {
         indexTab(tabId, changeInfo, tab)
       }
     })
-    // もし動画が存在する場合は情報をstorageに渡す
   }
-  if (tab.hasOwnProperty('audible')) {
+
+  if ('audible' in tab) {
     // 音声の再生停止
     console.log('changeInfo :>> ', changeInfo)
     console.log(tab.audible ? '再生 :>> ' : '停止 :>> ', tab.title)
     tab.audible && indexTab(tabId, changeInfo, tab)
-    // 音声の再生あって、インデックスされていない場合はインデックスを開始する
   }
 })
 
+// タブの削除イベントリスナー
 chrome.tabs.onRemoved.addListener(function(tabId, isWindowClosing) {
   console.log('tabId :>> ', tabId)
   console.log('isWindowClosing :>> ', isWindowClosing)
   chrome.storage.local.get(['bindVideoReferrer'], function(result) {
     let videos = result.bindVideoReferrer
     console.log('get videos :>> ', videos)
-    if (videos !== undefined || videos.length !== 0) {
+    if (videos && videos.length !== 0) {
       let tabIdIndex = tabIdindexOf(videos, tabId)
       if (tabIdIndex < 0) return false
-      videos.splice(tabIdindexOf(videos, tabId), 1)
+      videos.splice(tabIdIndex, 1)
       videos = removeDuplicates(videos, 'tabId')
       chrome.storage.local.set({ bindVideoReferrer: videos }, function() {
         console.log('set videos :>> ', videos)
       })
     }
   })
-  // タブの削除の処理
-  // もしトラック中のタブが存在するのであれば、storageから削除する
 })
 
-// TODO: メモ
-// indexTab => トラッキングを開始するためにchrome.storageに追加
-// removeIndexTab => トラッキングを解除するためにchrome.storageから削除
-// 動画視聴中に検索画面から他のページに遷移した際にどうするか？
+// コマンドのイベントリスナー
 chrome.commands.onCommand.addListener(function(command) {
   console.log('command :>>', command)
-  chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-    // アクティブなタブ tabs[0] のcontent scriptsにメッセージを送信
-    chrome.storage.local.get(['linkedTabId'], function(result) {
-      // タブのチェック
-      const tabId = result.linkedTabId
+  chrome.storage.local.get(['linkedTabId'], function(result) {
+    // タブのチェック
+    const tabId = result.linkedTabId
+    if (tabId) {
       chrome.tabs.sendMessage(tabId, { sendCommand: command }, function(response) {
         try {
-          console.log(response.farewell)
-        } catch (error) {}
+          console.log(response && response.farewell)
+        } catch (error) {
+          console.error('エラー:', error)
+        }
       })
-    })
+    }
   })
-  return 0
 })
