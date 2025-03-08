@@ -105,10 +105,10 @@
         "message": "Wipeyyはすべてのブラウザウィンドウとタブで動作します。"
     },
     "noSavedVideos": {
-        "message": "保存された動画がありません"
+        "message": "検出された動画がありません"
     },
     "saveVideoPrompt": {
-        "message": "ブラウジング中にWipeyyを使用して動画を保存してください"
+        "message": "ブラウジング中に動画は自動的に検出されます"
     },
     "learnHowToUse": {
         "message": "使い方を学ぶ"
@@ -118,5 +118,59 @@
     },
     "noTitle": {
         "message": "タイトルなし"
+    },
+    "detectVideos": {
+        "message": "動画の検出"
+    },
+    "detectVideosDescription": {
+        "message": "動画要素を含むページを訪れると、動画は自動的に検出されます。特別な操作は必要ありません。"
+    },
+    "accessPopup": {
+        "message": "検出された動画を表示"
+    },
+    "accessPopupDescription": {
+        "message": "ブラウザツールバーのWipeyy拡張機能アイコンをクリックすると、現在検出されている全ての動画のリストが表示されます。"
+    },
+    "controlVideo": {
+        "message": "ショートカットで動画を操作"
+    },
+    "controlVideoDescription": {
+        "message": "キーボードショートカットを使用して、リンクされた動画の再生/一時停止、早送り/巻き戻し、ピクチャーインピクチャーモードの切り替えなどを行います。"
+    },
+    "shortcutConfigDescription": {
+        "message": "キーボードショートカットは以下のURLから設定できます："
+    },
+    "globalShortcutDescription": {
+        "message": "ドロップダウンメニューから「グローバル」を選択すると、ブラウザがフォーカスされていなくても動画を操作できます。"
+    },
+    "defaultShortcuts": {
+        "message": "標準のコントロール"
+    },
+    "togglePictureInPicture": {
+        "message": "ピクチャーインピクチャーモードの切り替え"
+    },
+    "playPause": {
+        "message": "動画の再生/一時停止"
+    },
+    "forward10Seconds": {
+        "message": "10秒早送り"
+    },
+    "backward10Seconds": {
+        "message": "10秒巻き戻し"
+    },
+    "features": {
+        "message": "主な機能"
+    },
+    "featurePiP": {
+        "message": "検出されたあらゆる動画をピクチャーインピクチャーモードで表示"
+    },
+    "featureControls": {
+        "message": "キーボードによる再生操作（再生/一時停止、早送り/巻き戻し）"
+    },
+    "featureGlobal": {
+        "message": "ブラウザがフォーカスされていなくても機能するグローバルショートカット（ショーtカットの設定でグローバルを選択）"
+    },
+    "featureMultipleWindows": {
+        "message": "すべてのブラウザウィンドウとタブで動作"
     }
 }

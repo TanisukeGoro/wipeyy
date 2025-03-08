@@ -180,6 +180,7 @@ const App = () => {
                     <div className="card bg-base-100 shadow-xl p-6 text-center">
                         <h3 className="font-semibold">{getMessage('noSavedVideos')}</h3>
                         <p className="text-sm mt-2">{getMessage('saveVideoPrompt')}</p>
+                        <p className="text-sm mt-2">{getMessage('autoLinkDescription')}</p>
                         <button 
                             onClick={() => setCurrentPage('howToUse')} 
                             className="btn btn-sm btn-primary mt-4"

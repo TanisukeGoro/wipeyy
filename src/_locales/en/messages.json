@@ -105,10 +105,10 @@
         "message": "Wipeyy works across all your browser windows and tabs."
     },
     "noSavedVideos": {
-        "message": "No saved videos"
+        "message": "No detected videos"
     },
     "saveVideoPrompt": {
-        "message": "Use Wipeyy to save videos while browsing"
+        "message": "Videos will be automatically detected while browsing"
     },
     "learnHowToUse": {
         "message": "Learn how to use"
@@ -118,5 +118,59 @@
     },
     "noTitle": {
         "message": "No title"
+    },
+    "detectVideos": {
+        "message": "Video Detection"
+    },
+    "detectVideosDescription": {
+        "message": "Videos are automatically detected when you visit pages containing video elements. No action is required."
+    },
+    "accessPopup": {
+        "message": "View Detected Videos"
+    },
+    "accessPopupDescription": {
+        "message": "Click the Wipeyy extension icon in your browser toolbar to view a list of all currently detected videos."
+    },
+    "controlVideo": {
+        "message": "Control Videos with Shortcuts"
+    },
+    "controlVideoDescription": {
+        "message": "Use keyboard shortcuts to control the linked video, including play/pause, skip forward/backward, and toggle picture-in-picture mode."
+    },
+    "shortcutConfigDescription": {
+        "message": "Configure keyboard shortcuts by visiting:"
+    },
+    "globalShortcutDescription": {
+        "message": "Select \"Global\" from the dropdown menu to control videos even when the browser is not in focus."
+    },
+    "defaultShortcuts": {
+        "message": "Default Controls"
+    },
+    "togglePictureInPicture": {
+        "message": "Toggle picture-in-picture mode"
+    },
+    "playPause": {
+        "message": "Play or pause the video"
+    },
+    "forward10Seconds": {
+        "message": "Skip forward 10 seconds"
+    },
+    "backward10Seconds": {
+        "message": "Skip backward 10 seconds"
+    },
+    "features": {
+        "message": "Key Features"
+    },
+    "featurePiP": {
+        "message": "Picture-in-picture mode for any detected video"
+    },
+    "featureControls": {
+        "message": "Keyboard controls for playback (play/pause, skip forward/backward)"
+    },
+    "featureGlobal": {
+        "message": "Global shortcuts that work even when browser is not in focus (need select Global from keyboard shortcut settings)"
+    },
+    "featureMultipleWindows": {
+        "message": "Works across all browser windows and tabs"
     }
 }

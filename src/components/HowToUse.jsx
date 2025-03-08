@@ -68,57 +68,74 @@ const HowToUse = ({ onBack }) => {
                 <h2 className="text-lg font-semibold mb-4">{getMessage('gettingStarted')}</h2>
                 
                 <div className="mb-6">
-                    <h3 className="font-medium mb-2">1. {getMessage('findVideo')}</h3>
+                    <h3 className="font-medium mb-2">1. {getMessage('detectVideos')}</h3>
                     <p className="text-sm text-base-content">
-                        {getMessage('findVideoDescription')}
-                    </p>
-                    <div className="mt-2 bg-base-200 p-3 rounded-lg">
-                        <img src="../icon/icon_eye.png" alt="Wipeyy Icon" className="w-8 h-8 mx-auto mb-2" />
-                        <p className="text-xs text-center text-base-content opacity-80">{getMessage('iconAppears')}</p>
-                    </div>
-                </div>
-                
-                <div className="mb-6">
-                    <h3 className="font-medium mb-2">2. {getMessage('saveVideo')}</h3>
-                    <p className="text-sm text-base-content">
-                        {getMessage('saveVideoDescription')}
+                        {getMessage('detectVideosDescription')}
                     </p>
                 </div>
                 
                 <div className="mb-6">
-                    <h3 className="font-medium mb-2">3. {getMessage('accessVideos')}</h3>
+                    <h3 className="font-medium mb-2">2. {getMessage('accessPopup')}</h3>
                     <p className="text-sm text-base-content">
-                        {getMessage('accessVideosDescription')}
+                        {getMessage('accessPopupDescription')}
+                    </p>
+                </div>
+                
+                <div className="mb-6">
+                    <h3 className="font-medium mb-2">3. {getMessage('linkVideos')}</h3>
+                    <p className="text-sm text-base-content">
+                        {getMessage('linkVideosDescription')}
                     </p>
                 </div>
                 
                 <div>
-                    <h3 className="font-medium mb-2">4. {getMessage('linkVideos')}</h3>
+                    <h3 className="font-medium mb-2">4. {getMessage('controlVideo')}</h3>
                     <p className="text-sm text-base-content">
-                        {getMessage('linkVideosDescription')}
+                        {getMessage('controlVideoDescription')}
                     </p>
                 </div>
             </div>
             
             <div className="card bg-base-100 shadow-xl p-6 mt-4">
-                <h2 className="text-lg font-semibold mb-4">{getMessage('tips')}</h2>
+                <h2 className="text-lg font-semibold mb-4">{getMessage('keyboardShortcuts')}</h2>
+                
+                <div className="mb-6">
+                    <p className="text-sm text-base-content mb-3">
+                        {getMessage('shortcutConfigDescription')}
+                    </p>
+                    <div className="p-3 bg-base-200 rounded-lg text-sm text-base-content">
+                        <a href="chrome://extensions/shortcuts" className="link link-primary">chrome://extensions/shortcuts</a>
+                    </div>
+                    <p className="text-sm text-base-content mt-3">
+                        {getMessage('globalShortcutDescription')}
+                    </p>
+                </div>
                 
                 <div className="mb-4">
-                    <h3 className="font-medium mb-2">{getMessage('keyboardShortcuts')}</h3>
+                    <h3 className="font-medium mb-2">{getMessage('defaultShortcuts')}</h3>
                     <div className="grid grid-cols-2 gap-2 text-sm">
-                        <div className="col-span-1 font-semibold">Alt + W</div>
-                        <div className="col-span-1 text-base-content">{getMessage('togglePopup')}</div>
+                        <div className="col-span-1 font-semibold">Alt + P</div>
+                        <div className="col-span-1 text-base-content">{getMessage('togglePictureInPicture')}</div>
                         
-                        <div className="col-span-1 font-semibold">Alt + S</div>
-                        <div className="col-span-1 text-base-content">{getMessage('saveCurrentVideo')}</div>
+                        <div className="col-span-1 font-semibold">Alt + Space</div>
+                        <div className="col-span-1 text-base-content">{getMessage('playPause')}</div>
+                        
+                        <div className="col-span-1 font-semibold">Alt + →</div>
+                        <div className="col-span-1 text-base-content">{getMessage('forward10Seconds')}</div>
+                        
+                        <div className="col-span-1 font-semibold">Alt + ←</div>
+                        <div className="col-span-1 text-base-content">{getMessage('backward10Seconds')}</div>
                     </div>
                 </div>
                 
                 <div>
-                    <h3 className="font-medium mb-2">{getMessage('multipleWindows')}</h3>
-                    <p className="text-sm text-base-content">
-                        {getMessage('multipleWindowsDescription')}
-                    </p>
+                    <h3 className="font-medium mb-2">{getMessage('features')}</h3>
+                    <ul className="list-disc pl-5 text-sm text-base-content space-y-2">
+                        <li>{getMessage('featurePiP')}</li>
+                        <li>{getMessage('featureControls')}</li>
+                        <li>{getMessage('featureGlobal')}</li>
+                        <li>{getMessage('featureMultipleWindows')}</li>
+                    </ul>
                 </div>
             </div>
         </div>
