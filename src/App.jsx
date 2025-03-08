@@ -13,21 +13,26 @@ import './App.css';
 const App = () => {
     const [items, setItems] = useState([]);
     const [linkedTabId, setLinkedTabId] = useState('');
+    const [theme, setTheme] = useState('light');
 
     useEffect(() => {
+        // テーマの設定
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setTheme(prefersDark ? 'dark' : 'light');
+
         // 保存されたタブIDをロード
-        chrome.storage.local.get(['linkedTabId'], function (result) {
+        chrome.storage.local.get(['linkedTabId'], function(result) {
             console.log('tabId :>>', result);
             setLinkedTabId(result.linkedTabId || '');
         });
 
         // ビデオタブリストをロード
-        chrome.storage.local.get(['bindVideoReferrer'], function (result) {
+        chrome.storage.local.get(['bindVideoReferrer'], function(result) {
             const videoItems = result.bindVideoReferrer || [];
             setItems(videoItems);
 
             // タブの存在確認と背景色の設定
-            chrome.tabs.query({}, function (tabs) {
+            chrome.tabs.query({}, function(tabs) {
                 // 存在しないタブがあるか検索
                 const nilTabIds = videoItems
                     .map(tab => tab.tabId)
@@ -96,12 +101,12 @@ const App = () => {
 
     // タブを開く処理
     const openTab = item => {
-        chrome.tabs.query({ active: true, currentWindow: true }, function (tab) {
+        chrome.tabs.query({ active: true, currentWindow: true }, function(tab) {
             if (tab[0].windowId === item.windowId) {
                 chrome.tabs.update(item.tabId, { active: true });
             }
         });
-        chrome.windows.update(item.windowId, { focused: true }, function () {
+        chrome.windows.update(item.windowId, { focused: true }, function() {
             chrome.tabs.update(item.tabId, { active: true });
         });
     };
@@ -113,61 +118,101 @@ const App = () => {
 
     // タブIDをリンクする処理
     const linkTabId = id => {
-        chrome.storage.local.set({ linkedTabId: id }, function () {
+        chrome.storage.local.set({ linkedTabId: id }, function() {
             setLinkedTabId(id);
         });
     };
 
+    // テーマを切り替える処理
+    const toggleTheme = () => {
+        setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
+    };
+
     return (
-        <div>
-            {items.map((item, index) => (
-                <div key={index} className="d-flex">
-                    <div
-                        className="browser-view"
-                        style={{ backgroundColor: linkedTabId === item.tabId ? '#a6d06f' : '' }}
-                    >
-                        <div className="menu-bar">
-                            <div className="col-left">
-                                <button className="dot delete-tab" onClick={() => deleteTab(item)}>
-                                    <SvgBase className="btn-svg" width={9} height={9}>
-                                        <Close iconColor="#000" />
+        <div data-theme={theme} className="min-h-screen bg-base-200 p-4">
+            <div className="flex justify-between items-center mb-4">
+                <h1 className="text-xl font-bold text-primary">Wipeyy</h1>
+                <button onClick={toggleTheme} className="btn btn-sm btn-circle btn-ghost">
+                    {theme === 'light' ? '🌙' : '☀️'}
+                </button>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4">
+                {items.length === 0 ? (
+                    <div className="card bg-base-100 shadow-xl p-6 text-center">
+                        <h3 className="font-semibold">保存されたビデオがありません</h3>
+                        <p className="text-sm mt-2">ビデオを視聴中にWipeyyを使ってビデオを保存してください</p>
+                    </div>
+                ) : (
+                    items.map((item, index) => (
+                        <div
+                            key={index}
+                            className={`card bg-base-100 shadow-xl overflow-hidden video-card ${
+                                linkedTabId === item.tabId ? 'linked' : ''
+                            }`}
+                        >
+                            <div className="browser-bar">
+                                <div className="browser-bar-buttons">
+                                    <button
+                                        className="btn-close"
+                                        onClick={() => deleteTab(item)}
+                                        aria-label="タブを閉じる"
+                                    >
+                                        <SvgBase className="opacity-0 group-hover:opacity-100" width={7} height={7}>
+                                            <Close iconColor="#fff" />
+                                        </SvgBase>
+                                    </button>
+                                    <button className="btn-minimize" aria-label="最小化">
+                                        <SvgBase className="opacity-0 group-hover:opacity-100" width={7} height={7}>
+                                            <Minimize iconColor="#000" />
+                                        </SvgBase>
+                                    </button>
+                                    <button className="btn-open" onClick={() => openTab(item)} aria-label="タブを開く">
+                                        <SvgBase className="opacity-0 group-hover:opacity-100" width={7} height={7}>
+                                            <OpenTab iconColor="#fff" />
+                                        </SvgBase>
+                                    </button>
+                                </div>
+
+                                <div className="favicon-container">
+                                    {item.favicon && <img src={item.favicon} alt="" className="w-4 h-4" />}
+                                </div>
+
+                                <div className="url-display">{item.url}</div>
+
+                                <button className="btn btn-circle btn-xs btn-ghost">
+                                    <SvgBase width={14} height={14}>
+                                        <Settings />
                                     </SvgBase>
                                 </button>
-                                <button className="dot minimize-tab">
-                                    <SvgBase className="btn-svg" width={9} height={9}>
-                                        <Minimize iconColor="#000" />
-                                    </SvgBase>
-                                </button>
-                                <button className="dot open-tab" onClick={() => openTab(item)}>
-                                    <SvgBase className="btn-svg" width={9} height={9}>
-                                        <OpenTab iconColor="#000" />
-                                    </SvgBase>
-                                </button>
-                                <img src={item.favicon} alt="" className="favicon" />
                             </div>
-                            <div className="col-middle">
-                                <p className="search-box">{item.url}</p>
-                            </div>
-                            <div className="col-right">
-                                <SvgBase>
-                                    <Settings />
-                                </SvgBase>
-                            </div>
-                        </div>
-                        <div className="container" style={{ color: item.color }}>
-                            <div className="media-artwork">
-                                <img src={item.img} alt="" />
-                            </div>
-                            <div className="content">
-                                <h3>{item.title}</h3>
-                                <div className="ml-20" onClick={() => linkTabId(item.tabId)}>
-                                    {linkedTabId === item.tabId ? getMessage('L000002') : getMessage('L000001')}
+
+                            <figure className="relative">
+                                {item.img ? (
+                                    <img src={item.img} alt={item.title} className="card-image" />
+                                ) : (
+                                    <div className="card-image bg-gray-200 flex items-center justify-center">
+                                        <span className="text-gray-400">画像なし</span>
+                                    </div>
+                                )}
+                            </figure>
+
+                            <div
+                                className="card-body p-4"
+                                style={{ backgroundColor: item.backgroundColor, color: item.color }}
+                            >
+                                <h2 className="card-title">{item.title || 'タイトルなし'}</h2>
+
+                                <div className="card-actions justify-end mt-2">
+                                    <button onClick={() => linkTabId(item.tabId)} className="link-button">
+                                        {linkedTabId === item.tabId ? getMessage('L000002') : getMessage('L000001')}
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            ))}
+                    ))
+                )}
+            </div>
         </div>
     );
 };
