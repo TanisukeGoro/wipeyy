@@ -1,118 +1,118 @@
 /* コンポーネントのスタイル */
 .browser-view {
-  width: 315px;
-  height: 200px;
-  border: solid #707070 0.5px;
+    width: 315px;
+    height: 200px;
+    border: solid #707070 0.5px;
 }
 
 .menu-bar {
-  display: flex;
-  background-color: #aaa;
-  height: 32px;
-  width: 100%;
+    display: flex;
+    background-color: #aaa;
+    height: 32px;
+    width: 100%;
 }
 
 .col-left {
-  display: flex;
+    display: flex;
 }
 
 .col-middle {
-  flex-grow: 2;
+    flex-grow: 2;
 }
 
 .dot {
-  height: 15px;
-  width: 15px;
-  margin-top: 8px;
-  margin-left: 5px;
-  padding: 0;
-  background-color: #bbb;
-  border-radius: 50%;
-  border: solid #707070 1px;
-  display: inline-block;
+    height: 15px;
+    width: 15px;
+    margin-top: 8px;
+    margin-left: 5px;
+    padding: 0;
+    background-color: #bbb;
+    border-radius: 50%;
+    border: solid #707070 1px;
+    display: inline-block;
 }
 
 .dot:focus {
-  outline: none; /* FIXME: use focus-visible ? */
+    outline: none; /* FIXME: use focus-visible ? */
 }
 
 .btn-svg {
-  margin-top: 2px;
-  opacity: 0;
+    margin-top: 2px;
+    opacity: 0;
 }
 
 .col-left:hover .btn-svg {
-  opacity: 1;
+    opacity: 1;
 }
 
 .favicon {
-  vertical-align: middle;
-  margin: 8px 5px;
-  height: 15px;
+    vertical-align: middle;
+    margin: 8px 5px;
+    height: 15px;
 }
 
 .delete-tab {
-  background-color: #ed594a;
+    background-color: #ed594a;
 }
 
 .minimize-tab {
-  background-color: #fdd800;
+    background-color: #fdd800;
 }
 
 .open-tab {
-  background-color: #5ac05a;
+    background-color: #5ac05a;
 }
 
 .search-box {
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 200px;
-  background-color: #fff;
-  padding-right: 10px;
-  padding: 4px 10px 4px 4px;
-  margin-top: 4px;
-  border: solid #707070 1px;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 200px;
+    background-color: #fff;
+    padding-right: 10px;
+    padding: 4px 10px 4px 4px;
+    margin-top: 4px;
+    border: solid #707070 1px;
 }
 
 .d-flex {
-  padding: 6px 12px;
-  display: flex;
+    padding: 6px 12px;
+    display: flex;
 }
 
 .container {
-  position: relative;
-  width: 315px;
-  padding: 6px 0;
+    position: relative;
+    width: 315px;
+    padding: 6px 0;
 }
 
 .media-artwork {
-  z-index: 0;
-  text-align: center;
+    z-index: 0;
+    text-align: center;
 }
 
 .media-artwork img {
-  object-fit: cover;
-  margin: auto;
-  width: 285px;
-  height: 150px;
+    object-fit: cover;
+    margin: auto;
+    width: 285px;
+    height: 150px;
 }
 
 .content {
-  position: absolute;
-  z-index: 20;
-  top: 10px;
-  left: 30px;
+    position: absolute;
+    z-index: 20;
+    top: 10px;
+    left: 30px;
 }
 
 .content h3 {
-  width: 260px;
-  margin: 0 0;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
+    width: 260px;
+    margin: 0 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .ml-20 {
-  margin-left: 20px;
+    margin-left: 20px;
 }

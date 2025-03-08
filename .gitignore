@@ -6,3 +6,9 @@ src/memo.md
 /dist
 *.zip
 /dev
+
+# ESLint
+.eslintcache
+
+# Prettier
+.prettierignore

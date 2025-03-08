@@ -1,28 +1,28 @@
 module.exports = {
-  root: true,
   env: {
     browser: true,
-    node: true
+    es2021: true,
+    node: true,
+    webextensions: true,
   },
+  extends: ["eslint:recommended", "plugin:react/recommended"],
   parserOptions: {
-    parser: 'babel-eslint'
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 12,
+    sourceType: "module",
   },
-  extends: [
-    'eslint:recommended', 
-    'plugin:vue/recommended', 
-    'plugin:prettier/recommended', 
-    'prettier/vue'
-  ],
-  plugins: ['vue'],
+  plugins: ["react"],
   rules: {
-    semi: ['error', 'never'],
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'vue/max-attributes-per-line': 'off',
-    'vue/html-self-closing': [ 'error', { html: { void: 'always' }} ],
-    'vue/html-closing-bracket-spacing': 'off',
-    'prettier/prettier': ['error', { semi: false }]
+    "react/prop-types": "off",
+    "no-unused-vars": "warn",
+    "react/react-in-jsx-scope": "off",
+    "no-prototype-builtins": "off",
   },
-  globals: {
-    'chrome': true
-  }
-}
+  settings: {
+    react: {
+      version: "detect",
+    },
+  },
+};

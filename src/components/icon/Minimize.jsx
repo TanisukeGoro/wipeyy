@@ -1,9 +1,9 @@
 const Minimize = ({ iconColor = 'currentColor' }) => {
-  return (
-    <g>
-      <line x1="5" y1="12" x2="19" y2="12" stroke={iconColor} />
-    </g>
-  )
-}
+    return (
+        <g>
+            <line x1="5" y1="12" x2="19" y2="12" stroke={iconColor} />
+        </g>
+    );
+};
 
-export default Minimize
+export default Minimize;
